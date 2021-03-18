@@ -48,14 +48,19 @@ function cleanup {
 
 trap cleanup EXIT
 
-# Creates a pseudo-terminal for detached mode - https://github.com/opencontainers/runc/blob/v1.0.0-rc92/docs/terminals.md#detached
+# NOTE: https://github.com/opencontainers/runc/blob/v1.0.0-rc92/docs/terminals.md#detached
 if [ ! -S /tmp/tty.sock ]; then
+    info "Creating pseudo-terminal in detached mode"
     (recvtty --pid-file /tmp/recvtty.pid --mode null /tmp/tty.sock &) &
 fi
-mkdir -p /tmp/images
-pushd /tmp/images > /dev/null
-skopeo copy docker://busybox:latest oci:busybox:latest > /dev/null
-popd > /dev/null
+
+if [ ! -d /tmp/images/busybox/ ] || [ -z "$(ls -A /tmp/images/busybox)" ]; then
+    info "Pulling busybox image"
+    mkdir -p /tmp/images
+    pushd /tmp/images > /dev/null
+    skopeo copy docker://busybox:latest oci:busybox:latest > /dev/null
+    popd > /dev/null
+fi
 
 pushd "$(mktemp -d)" > /dev/null
 cp -r /tmp/images/busybox .
@@ -68,7 +73,8 @@ cat << EOF > bundle/rootfs/init.sh
 #!/bin/sh
 
 trap "echo 'Shutting down, got signal'" EXIT
-trap "echo 'Error: infinite loop terminated'" EXIT
+trap "echo 'Error: infinite loop terminated'" ERR
+echo "Starting pause container"
 sleep infinity
 EOF
 
@@ -94,7 +100,6 @@ runc list
 info "Network namespaces after container creation and before allocation:"
 lsns --type net
 sudo ip netns
-
 
 # Assign container's net namespace
 sudo mkdir -p /var/run/netns
