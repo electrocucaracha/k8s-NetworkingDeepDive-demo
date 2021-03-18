@@ -18,6 +18,28 @@ source defaults.env
 # shellcheck source=manual/_utils.sh
 source _utils.sh
 
+function cleanup {
+    info "Stopping $CONTAINERID container"
+    if runc list | grep -q "^$CONTAINERID.*running"; then
+        runc kill "$CONTAINERID" KILL
+    fi
+    until runc list | grep -q "^$CONTAINERID.*stopped"; do
+        sleep 1
+    done
+    if [ -f /tmp/recvtty.pid ]; then
+        kill -9 "$(cat /tmp/recvtty.pid)"
+        rm -f /tmp/recvtty.pid
+    fi
+    if [ -S /tmp/tty.sock ]; then
+        rm -f /tmp/tty.sock
+    fi
+    if runc list | grep -q "^$CONTAINERID"; then
+        runc delete "$CONTAINERID"
+    fi
+}
+
+trap cleanup EXIT
+
 # Creates a pseudo-terminal for detached mode - https://github.com/opencontainers/runc/blob/v1.0.0-rc92/docs/terminals.md#detached
 if [ ! -S /tmp/tty.sock ]; then
     (recvtty --pid-file /tmp/recvtty.pid --mode null /tmp/tty.sock &) &
@@ -32,7 +54,8 @@ cp -r /tmp/images/busybox .
 sudo umoci unpack --image busybox:latest bundle
 sudo chown -R "$USER:" bundle/
 
-# Creates the Init script
+# This script simulates the pause container
+# NOTE: Pause container - https://www.ianlewis.org/en/almighty-pause-container
 cat << EOF > bundle/rootfs/init.sh
 #!/bin/sh
 
@@ -64,7 +87,6 @@ info "Network namespaces after container creation and before allocation:"
 lsns --type net
 sudo ip netns
 
-# NOTE: Pause container - https://www.ianlewis.org/en/almighty-pause-container
 
 # Assign container's net namespace
 sudo mkdir -p /var/run/netns
@@ -107,17 +129,3 @@ runc exec "$CONTAINERID" ip addr
 
 info "Containers list:"
 runc list
-
-info "Stopping $CONTAINERID container"
-runc kill "$CONTAINERID" KILL
-until runc list | grep -q "^$CONTAINERID.*stopped"; do
-    sleep 1
-done
-if [ -f /tmp/recvtty.pid ]; then
-    kill -9 "$(cat /tmp/recvtty.pid)"
-    rm -f /tmp/recvtty.pid
-fi
-if [ -S /tmp/tty.sock ]; then
-    rm -f /tmp/tty.sock
-fi
-runc delete "$CONTAINERID"
