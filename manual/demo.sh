@@ -36,7 +36,8 @@ sudo chown -R "$USER:" bundle/
 cat << EOF > bundle/rootfs/init.sh
 #!/bin/sh
 
-echo "Kubernetes Community Day El Salvador 2021"
+trap "echo 'Shutting down, got signal'" EXIT
+trap "echo 'Error: infinite loop terminated'" EXIT
 sleep infinity
 EOF
 
