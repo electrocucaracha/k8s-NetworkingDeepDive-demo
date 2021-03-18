@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :manual do |manual|
-    manual.vm.synced_folder './manual', '/vagrant'
+    manual.vm.synced_folder './pause', '/vagrant'
     manual.vm.provision 'shell', privileged: false, inline: <<-SHELL
       set -o errext
       set -o pipefail
