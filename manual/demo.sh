@@ -23,7 +23,15 @@ function cleanup {
     if runc list | grep -q "^$CONTAINERID.*running"; then
         runc kill "$CONTAINERID" KILL
     fi
+
+    attempt_counter=0
+    max_attempts=15
     until runc list | grep -q "^$CONTAINERID.*stopped"; do
+        if [ ${attempt_counter} -eq ${max_attempts} ];then
+            echo "Max attempts reached"
+            return
+        fi
+        attempt_counter=$((attempt_counter+1))
         sleep 1
     done
     if [ -f /tmp/recvtty.pid ]; then
