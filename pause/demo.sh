@@ -20,13 +20,13 @@ source /opt/common/_utils.sh
 
 function cleanup {
     info "Stopping $CONTAINERID container"
-    if runc list | grep -q "^$CONTAINERID.*running"; then
-        runc kill "$CONTAINERID" KILL
+    if runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*running"; then
+        runc --root "$HOME/.runc" kill "$CONTAINERID" KILL
     fi
 
     attempt_counter=0
     max_attempts=15
-    until runc list | grep -q "^$CONTAINERID.*stopped"; do
+    until runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*stopped"; do
         if [ ${attempt_counter} -eq ${max_attempts} ];then
             echo "Max attempts reached"
             return
@@ -41,8 +41,8 @@ function cleanup {
     if [ -S /tmp/tty.sock ]; then
         rm -f /tmp/tty.sock
     fi
-    if runc list | grep -q "^$CONTAINERID"; then
-        runc delete "$CONTAINERID"
+    if runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID"; then
+        runc --root "$HOME/.runc" delete "$CONTAINERID"
     fi
 }
 
@@ -89,13 +89,13 @@ lsns --type net
 
 # Start container
 info "Starting the $CONTAINERID container..."
-runc run --detach --bundle bundle --console-socket /tmp/tty.sock "$CONTAINERID"
+runc --root "$HOME/.runc" run --detach --bundle bundle --console-socket /tmp/tty.sock "$CONTAINERID"
 popd > /dev/null
 
 info "Processes list:"
 ps -f -C runc -C sh
 info "Container list:"
-runc list
+runc --root "$HOME/.runc" list
 
 info "Network namespaces after container creation and before allocation:"
 lsns --type net
@@ -103,7 +103,7 @@ sudo ip netns
 
 # Assign container's net namespace
 sudo mkdir -p /var/run/netns
-sudo ln -sf "$(jq  -r '.namespace_paths.NEWNET' "/var/run/user/1000/runc/$CONTAINERID/state.json")" "$CNI_NETNS"
+sudo ln -sf "$(jq  -r '.namespace_paths.NEWNET' "$HOME/.runc/$CONTAINERID/state.json")" "$CNI_NETNS"
 
 info "Network namespaces after allocation:"
 sudo ip netns
@@ -112,7 +112,7 @@ info "Host Network state:"
 ip addr
 brctl show
 info "Container Network state:"
-runc exec "$CONTAINERID" ip addr
+runc --root "$HOME/.runc" exec "$CONTAINERID" ip addr
 
 # Uses CNI_PATH, NETCONFPATH and CNI_IFNAME values
 info "Adding network thru CNI tool:"
@@ -126,7 +126,7 @@ ip addr
 brctl show
 brctl showmacs "$BRIDGE_NAME"
 info "Container $CNI_IFNAME nic info:"
-runc exec "$CONTAINERID" ip addr show "$CNI_IFNAME"
+runc --root "$HOME/.runc" exec "$CONTAINERID" ip addr show "$CNI_IFNAME"
 
 # Disconnect container from bridge
 info "Droping network thru CNI tool:"
@@ -138,7 +138,7 @@ ip addr
 brctl show
 brctl showmacs "$BRIDGE_NAME"
 info "Container Network state:"
-runc exec "$CONTAINERID" ip addr
+runc --root "$HOME/.runc" exec "$CONTAINERID" ip addr
 
 info "Containers list:"
-runc list
+runc --root "$HOME/.runc" list

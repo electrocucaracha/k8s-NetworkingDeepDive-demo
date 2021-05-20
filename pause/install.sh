@@ -45,8 +45,10 @@ fi
 if [ -n "$pkgs" ]; then
     # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
     curl -fsSL http://bit.ly/install_pkg | PKG=$pkgs bash
-    # shellcheck disable=SC1091
-    source /etc/profile.d/path.sh
+    if ! command -v go; then
+        # shellcheck disable=SC1091
+        source /etc/profile.d/path.sh
+    fi
 fi
 
 # umoci - Modifies Open Container Images
@@ -62,13 +64,13 @@ if ! command -v cnitool; then
 fi
 
 # runc - CLI tool for spawning and running containers according to the OCI specification.
-if ! command -v runc; then
-    sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.0.0-rc92/runc.amd64
+if ! command -v runc  || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.0.0-rc95" ]; then
+    sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.0.0-rc95/runc.amd64
     sudo chmod +x /usr/bin/runc
 fi
 
 # recvtty - Reference implementation of a consumer of runC's --console-socket API
 if ! command -v recvtty; then
-    go get github.com/opencontainers/runc/contrib/cmd/recvtty@v1.0.0-rc93
+    go get github.com/opencontainers/runc/contrib/cmd/recvtty@v1.0.0-rc95
     sudo mv ~/go/bin/recvtty /usr/bin/
 fi
