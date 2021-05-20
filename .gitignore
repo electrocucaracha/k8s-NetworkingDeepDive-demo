@@ -1,2 +1,3 @@
 .vagrant/
 .tox/
+super-linter.log
