@@ -13,7 +13,7 @@ set -o xtrace
 set -o errexit
 set -o nounset
 
-# shellcheck source=manual/defaults.env
+# shellcheck source=pause/defaults.env
 source defaults.env
 
 # Creates the NETCONFPATH folder

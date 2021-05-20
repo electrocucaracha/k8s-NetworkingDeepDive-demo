@@ -13,10 +13,10 @@ set -o xtrace
 set -o errexit
 set -o nounset
 
-# shellcheck source=manual/defaults.env
+# shellcheck source=pause/defaults.env
 source defaults.env
-# shellcheck source=manual/_utils.sh
-source _utils.sh
+# shellcheck disable=SC1091
+source /opt/common/_utils.sh
 
 function cleanup {
     info "Stopping $CONTAINERID container"

@@ -20,7 +20,7 @@ non-docker tools.
 The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
-```
+```bash
 23:49:29 - INFO: Pulling busybox image
 
 23:49:33 - INFO: Network namespaces before container creation:
