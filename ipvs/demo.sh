@@ -26,6 +26,7 @@ function print_stats {
 function generate_traffic {
     for _ in {1..12}; do
         curl -s "$SERVICE_ADDRESS"
+        echo ""
     done
     print_stats
 }
@@ -35,7 +36,7 @@ info "Using Round Robin scheduling algorithm"
 generate_traffic
 
 info "Increase svc1 weight"
-ip_addr="$(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' svc1)"
+ip_addr=${POD_SUBNET_PREFIX}$((1+1))
 sudo ipvsadm --edit-server --tcp-service "$SERVICE_ADDRESS" --real-server "$ip_addr" --masquerading --weight 3
 sudo ipvsadm --list --numeric
 

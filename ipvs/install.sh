@@ -25,11 +25,9 @@ if ! command -v curl; then
 fi
 # Install dependencies
 pkgs=""
-for pkg in docker ipvsadm; do
-    if ! command -v "$pkg"; then
-        pkgs+=" $pkg"
-    fi
-done
+if ! command -v ipvsadm > /dev/null; then
+    pkgs+=" ipvsadm"
+fi
 if [ -n "$pkgs" ]; then
     # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
     curl -fsSL http://bit.ly/install_pkg | PKG=$pkgs bash

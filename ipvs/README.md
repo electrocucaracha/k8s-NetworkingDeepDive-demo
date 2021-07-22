@@ -21,7 +21,7 @@ The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
 ```bash
-19:14:22 - INFO: Using Round Robin scheduling algorithm
+17:29:38 - INFO: Using Round Robin scheduling algorithm
 This is service #3
 This is service #2
 This is service #1
@@ -37,21 +37,21 @@ This is service #1
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         12       84       60     5316     6276
-  -> 172.80.0.2:80                       4       28       20     1772     2092
-  -> 172.80.0.3:80                       4       28       20     1772     2092
-  -> 172.80.0.4:80                       4       28       20     1772     2092
+TCP  1.2.3.4:80                         12       60       60     4068     4128
+  -> 172.80.0.2:80                       4       20       20     1356     1376
+  -> 172.80.0.3:80                       4       20       20     1356     1376
+  -> 172.80.0.4:80                       4       20       20     1356     1376
 
-19:14:27 - INFO: Increase svc1 weight
+17:29:43 - INFO: Increase svc1 weight
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
   -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
 TCP  1.2.3.4:80 rr
-  -> 172.80.0.2:80                Masq    3      0          4
-  -> 172.80.0.3:80                Masq    1      0          4
-  -> 172.80.0.4:80                Masq    1      0          4
+  -> 172.80.0.2:80                Masq    3      0          4         
+  -> 172.80.0.3:80                Masq    1      0          4         
+  -> 172.80.0.4:80                Masq    1      0          4         
 
-19:14:27 - INFO: Using Weighted Round Robin scheduling algorithm
+17:29:43 - INFO: Using Weighted Round Robin scheduling algorithm
 This is service #1
 This is service #1
 This is service #3
@@ -67,8 +67,8 @@ This is service #1
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         24      168      120    10632    12552
-  -> 172.80.0.2:80                      12       84       60     5316     6276
-  -> 172.80.0.3:80                       6       42       30     2658     3138
-  -> 172.80.0.4:80                       6       42       30     2658     3138
+TCP  1.2.3.4:80                         24      120      120     8136     8256
+  -> 172.80.0.2:80                      12       60       60     4068     4128
+  -> 172.80.0.3:80                       6       30       30     2034     2064
+  -> 172.80.0.4:80                       6       30       30     2034     2064
 ```
