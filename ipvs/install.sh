@@ -25,9 +25,11 @@ if ! command -v curl; then
 fi
 # Install dependencies
 pkgs=""
-if ! command -v ipvsadm > /dev/null; then
-    pkgs+=" ipvsadm"
-fi
+for pkg in ipvsadm ipset; do
+    if ! command -v "$pkg" > /dev/null; then
+        pkgs+=" $pkg"
+    fi
+done
 if [ -n "$pkgs" ]; then
     # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
     curl -fsSL http://bit.ly/install_pkg | PKG=$pkgs bash

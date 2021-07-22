@@ -69,6 +69,8 @@ function create_sandbox {
     netns_exec "$pod_name" ip address add "$ip_address/24" dev "veth${id}p"
     netns_exec "$pod_name" ip route add default via "${POD_SUBNET_GW}"
 
+    sudo ipset add KUBE-LOOP-BACK "$ip_address,tcp:80,$ip_address"
+
     add_endpoint "$ip_address:80"
 }
 
@@ -76,7 +78,6 @@ function create_sandbox {
 # IP forwarding enables receiving traffic on our virtual ethernet device and 
 # forwarding it to another device and vice versa. 
 sudo sysctl --write net.ipv4.ip_forward=1
-sudo sysctl -p
 
 # Configure Pod Subnet Bridge
 if ! ip addr show cbr0; then
@@ -93,9 +94,8 @@ if ! ip addr show cbr0; then
     sudo iptables --table filter --append FORWARD \
     --in-interface eth0 --out-interface cbr0 --jump ACCEPT
 
-    # NAT - Whenever a packet leaves through cbr0 interface the packet’s source
-    # IP will be updated to the IP of the cbr0 interface
-    sudo iptables --table nat --append POSTROUTING --source "${POD_SUBNET_PREFIX}0/24" --jump MASQUERADE
+    sudo ipset create KUBE-LOOP-BACK hash:ip,port,ip
+    sudo iptables --table nat --append POSTROUTING --match set --match-set KUBE-LOOP-BACK dst,dst,src --jump MASQUERADE
 fi
 
 # Enable IPVS Kernel module
@@ -112,3 +112,6 @@ done
 
 # Virtual Server table
 sudo ipvsadm --list --numeric
+
+# IP set list
+sudo ipset list
