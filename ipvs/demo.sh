@@ -65,7 +65,7 @@ sudo ip addr add "$SERVICE_IP/32" dev kube-ipvs0
 # LAN (VxLAN) traffic for communication between Network namespaces
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
 sudo modprobe br_netfilter
-sudo sysctl --write net.bridge.bridge-nf-call-iptables=1
+sudo sysctl --write net.bridge.bridge-nf-call-iptables=1 > /dev/null
 generate_traffic true
 
 info "Enabiling Hairpin connections"
@@ -77,5 +77,5 @@ sudo ip link set cbr0 promisc on
 # should be enabled if connections handled by IPVS are to be also handled by
 # stateful firewall rules. That is, iptables rules that make use of connection
 # tracking.
-sudo sysctl --write net.ipv4.vs.conntrack=1
+sudo sysctl --write net.ipv4.vs.conntrack=1 > /dev/null
 generate_traffic true

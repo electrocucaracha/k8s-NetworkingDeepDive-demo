@@ -21,9 +21,9 @@ The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
 ```bash
-21:23:38 - INFO: Using Round Robin scheduling algorithm
+13:12:30 - INFO: Using Round Robin scheduling algorithm
 
-21:23:38 - INFO: Generating HTTP traffic
+13:12:30 - INFO: Generating HTTP traffic
 This is service #3
 This is service #2
 This is service #1
@@ -38,7 +38,7 @@ TCP  1.2.3.4:80                          6       30       30     2034     2064
   -> 172.80.0.3:80                       2       10       10      678      688
   -> 172.80.0.4:80                       2       10       10      678      688
 
-21:23:43 - INFO: Increase pod1 weight
+13:12:35 - INFO: Increase pod1 weight
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
   -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
@@ -47,9 +47,9 @@ TCP  1.2.3.4:80 wrr
   -> 172.80.0.3:80                Masq    1      0          2         
   -> 172.80.0.4:80                Masq    1      0          2         
 
-21:23:43 - INFO: Using Weighted Round Robin scheduling algorithm
+13:12:35 - INFO: Using Weighted Round Robin scheduling algorithm
 
-21:23:43 - INFO: Generating HTTP traffic
+13:12:35 - INFO: Generating HTTP traffic
 This is service #1
 This is service #1
 This is service #3
@@ -64,9 +64,9 @@ TCP  1.2.3.4:80                         12       60       60     4068     4128
   -> 172.80.0.3:80                       3       15       15     1017     1032
   -> 172.80.0.4:80                       3       15       15     1017     1032
 
-21:23:48 - INFO: Validating communication between Pod and ClusterIP
+13:12:40 - INFO: Validating communication between Pod and ClusterIP
 
-21:23:48 - INFO: Generating HTTP traffic
+13:12:40 - INFO: Generating HTTP traffic
 
 
 
@@ -81,10 +81,9 @@ TCP  1.2.3.4:80                         12       60       60     4068     4128
   -> 172.80.0.3:80                       3       15       15     1017     1032
   -> 172.80.0.4:80                       3       15       15     1017     1032
 
-21:24:00 - INFO: Creating IPVS dummy interface
-net.bridge.bridge-nf-call-iptables = 1
+13:12:52 - INFO: Creating IPVS dummy interface
 
-21:24:00 - INFO: Generating HTTP traffic
+13:12:52 - INFO: Generating HTTP traffic
 This is service #3
 This is service #2
 
@@ -99,10 +98,9 @@ TCP  1.2.3.4:80                         18       82       80     5544     5504
   -> 172.80.0.3:80                       5       25       25     1695     1720
   -> 172.80.0.4:80                       5       25       25     1695     1720
 
-21:24:07 - INFO: Enabiling Hairpin connections
-net.ipv4.vs.conntrack = 1
+13:12:59 - INFO: Enabiling Hairpin connections
 
-21:24:07 - INFO: Generating HTTP traffic
+13:12:59 - INFO: Generating HTTP traffic
 This is service #3
 This is service #2
 This is service #1
@@ -112,8 +110,8 @@ This is service #1
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         24      111      110     7526     7568
+TCP  1.2.3.4:80                         24      110      110     7474     7568
   -> 172.80.0.2:80                      10       42       40     2832     2752
   -> 172.80.0.3:80                       7       35       35     2373     2408
-  -> 172.80.0.4:80                       7       34       35     2321     2408
+  -> 172.80.0.4:80                       7       33       35     2269     2408
 ```
