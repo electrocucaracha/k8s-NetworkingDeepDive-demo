@@ -29,8 +29,8 @@ jobs:
       - name: Setup common folder
         run: mkdir -p /opt/common && cp ./common/* /opt/common
       - name: Install dependencies
-        run: cd $DEMO_TYPE; ./install.sh
+        run: cd "$DEMO_TYPE"; ./install.sh
       - name: Configure services
-        run: cd $DEMO_TYPE; ./configure.sh
+        run: cd "$DEMO_TYPE"; ./configure.sh
       - name: Run demo
-        run: cd $DEMO_TYPE; ./demo.sh
+        run: cd "$DEMO_TYPE"; ./demo.sh
