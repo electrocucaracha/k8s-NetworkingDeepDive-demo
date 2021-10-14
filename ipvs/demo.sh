@@ -68,7 +68,7 @@ sudo modprobe br_netfilter
 sudo sysctl --write net.bridge.bridge-nf-call-iptables=1 > /dev/null
 generate_traffic true
 
-info "Enabiling Hairpin connections"
+info "Enabling Hairpin connections"
 # Promiscuous mode is a mode causes the controller to pass all traffic it
 # receives to the central processing unit (CPU) rather than passing only the
 # frames that the controller is specifically programmed to receive.

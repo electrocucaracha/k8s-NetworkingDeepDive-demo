@@ -93,7 +93,7 @@ TCP  1.2.3.4:80                         18       83       80     5596     5504
   -> 172.80.0.3:80                       5       26       25     1747     1720
   -> 172.80.0.4:80                       5       25       25     1695     1720
 
-19:00:41 - INFO: Enabiling Hairpin connections
+19:00:41 - INFO: Enabling Hairpin connections
 
 19:00:41 - INFO: Generating HTTP traffic
 This is service #3
