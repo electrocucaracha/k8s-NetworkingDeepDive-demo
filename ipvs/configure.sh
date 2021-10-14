@@ -42,8 +42,11 @@ function netns_exec {
 
 # add_endpoint() - Adds a new entry in the service table
 function add_endpoint {
+    local ip_address="$1"
+
+    sudo ipset add KUBE-LOOP-BACK "$ip_address,tcp:80,$ip_address"
     sudo ipvsadm --add-server --tcp-service "$SERVICE_ADDRESS" \
-    --real-server "$1" --masquerading
+    --real-server "${ip_address}:80" --masquerading
 }
 
 # create_sandbox() - Initializes a Pod
@@ -69,9 +72,7 @@ function create_sandbox {
     netns_exec "$pod_name" ip address add "$ip_address/24" dev "veth${id}p"
     netns_exec "$pod_name" ip route add default via "${POD_SUBNET_GW}"
 
-    sudo ipset add KUBE-LOOP-BACK "$ip_address,tcp:80,$ip_address"
-
-    add_endpoint "$ip_address:80"
+    add_endpoint "$ip_address"
 }
 
 # Enable IPv4 Forwarding
@@ -115,3 +116,7 @@ sudo ipvsadm --list --numeric
 
 # IP set list
 sudo ipset list
+
+# Show IP tables
+sudo iptables -L -n -v
+sudo iptables -t nat -L -n -v
