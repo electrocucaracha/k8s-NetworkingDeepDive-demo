@@ -68,7 +68,7 @@ Vagrant.configure('2') do |config|
     config.proxy.enabled = { docker: false }
   end
 
-  %w[pause ipvs].each do |instance|
+  %w[pause ipvs flannel].each do |instance|
     config.vm.define instance do |demo|
       demo.vm.synced_folder './common', '/opt/common'
       demo.vm.synced_folder instance.to_s, '/vagrant'

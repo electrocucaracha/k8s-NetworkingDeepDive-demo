@@ -19,7 +19,7 @@ jobs:
   check-demo:
     strategy:
       matrix:
-        demo: [pause, ipvs]
+        demo: [pause, ipvs, flannel]
     runs-on: ubuntu-20.04
     env:
       GO111MODULE: "on"

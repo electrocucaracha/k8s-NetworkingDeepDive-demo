@@ -20,7 +20,7 @@ are determine by the **PROVIDER** environment variable.
 Once Vagrant is installed, it's possible to provision a Virtual
 Machine using the following instructions:
 
-    vagrant up <pause|ipvs>
+    vagrant up <pause|ipvs|flannel>
 
 [1]: https://www.vagrantup.com/
 [2]: https://github.com/electrocucaracha/bootstrap-vagrant
