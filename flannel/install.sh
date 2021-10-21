@@ -13,6 +13,8 @@ set -o xtrace
 set -o errexit
 set -o nounset
 
+export PKG_FLANNEL_VERSION=${PKG_FLANNEL_VERSION:-1.1}
+
 if ! command -v curl; then
     # shellcheck disable=SC1091
     source /etc/os-release || source /usr/lib/os-release
