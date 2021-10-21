@@ -62,11 +62,13 @@ IPVS
 kube
 kubelet
 kubernetes
+KVM
 lft
 libvirt
 lladdr
 LocalAddress
 loopback
+LXC
 ly
 markdownlint
 Masq
@@ -93,6 +95,7 @@ numtxqueues
 ol
 onlink
 opensource
+OpenVswitch
 OutBytes
 OutPkts
 PID
@@ -106,6 +109,7 @@ Prot
 proto
 provisioner
 qdisc
+qemu
 qlen
 rbng
 RemoteAddress
@@ -127,11 +131,14 @@ TTY
 UDP
 udpcsum
 UID
+uplink
 vagrantup
 veth
 vethb
 VirtualBox
+virtualized
 VNI
+vtap
 VTEP
 VtepMAC
 VXLAN
