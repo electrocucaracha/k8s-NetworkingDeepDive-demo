@@ -28,11 +28,6 @@ if ! command -v curl; then
 fi
 # Install dependencies
 pkgs=""
-for pkg in jq skopeo; do
-    if ! command -v "$pkg"; then
-        pkgs+=" $pkg"
-    fi
-done
 if ! command -v go; then
     pkgs+=" go-lang build-essential"
 fi
@@ -42,13 +37,11 @@ fi
 if [ ! -d "$PKG_CNI_PLUGINS_FOLDER" ]; then
     pkgs+=" cni-plugins"
 fi
-if [ -n "$pkgs" ]; then
-    # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
-    curl -fsSL http://bit.ly/install_pkg | PKG=$pkgs bash
-    if ! command -v go; then
-        # shellcheck disable=SC1091
-        source /etc/profile.d/path.sh
-    fi
+# NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
+curl -fsSL http://bit.ly/install_pkg | PKG_COMMANDS_LIST="jq,skopeo" PKG=$pkgs bash
+if ! command -v go; then
+    # shellcheck disable=SC1091
+    source /etc/profile.d/path.sh
 fi
 
 # umoci - Modifies Open Container Images
