@@ -21,9 +21,9 @@ The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
 ```bash
-19:00:12 - INFO: Using Round Robin scheduling algorithm
+23:39:16 - INFO: Using Round Robin scheduling algorithm
 
-19:00:12 - INFO: Generating HTTP traffic
+23:39:16 - INFO: Generating HTTP traffic (Host to IPVS Service)
 This is service #3
 This is service #2
 This is service #1
@@ -33,12 +33,12 @@ This is service #1
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                          6       31       30     2086     2064
+TCP  1.2.3.4:80                          6       30       30     2034     2064
   -> 172.80.0.2:80                       2       10       10      678      688
-  -> 172.80.0.3:80                       2       11       10      730      688
+  -> 172.80.0.3:80                       2       10       10      678      688
   -> 172.80.0.4:80                       2       10       10      678      688
 
-19:00:17 - INFO: Increase pod1 weight
+23:39:21 - INFO: Increase pod1 weight
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
   -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
@@ -47,9 +47,9 @@ TCP  1.2.3.4:80 wrr
   -> 172.80.0.3:80                Masq    1      0          2         
   -> 172.80.0.4:80                Masq    1      0          2         
 
-19:00:17 - INFO: Using Weighted Round Robin scheduling algorithm
+23:39:21 - INFO: Using Weighted Round Robin scheduling algorithm
 
-19:00:17 - INFO: Generating HTTP traffic
+23:39:21 - INFO: Generating HTTP traffic (Host to IPVS Service)
 This is service #1
 This is service #1
 This is service #3
@@ -59,26 +59,31 @@ This is service #1
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         12       61       60     4120     4128
+TCP  1.2.3.4:80                         12       60       60     4068     4128
   -> 172.80.0.2:80                       6       30       30     2034     2064
-  -> 172.80.0.3:80                       3       16       15     1069     1032
+  -> 172.80.0.3:80                       3       15       15     1017     1032
   -> 172.80.0.4:80                       3       15       15     1017     1032
 
-19:00:22 - INFO: Validating communication between Pod and ClusterIP
+23:39:26 - INFO: Validating communication between Pod and ClusterIP
 
-19:00:22 - INFO: Generating HTTP traffic
+23:39:26 - INFO: Generating HTTP traffic (Pod to IPVS Service)
+
+
+
+
+
 
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         12       61       60     4120     4128
+TCP  1.2.3.4:80                         12       60       60     4068     4128
   -> 172.80.0.2:80                       6       30       30     2034     2064
-  -> 172.80.0.3:80                       3       16       15     1069     1032
+  -> 172.80.0.3:80                       3       15       15     1017     1032
   -> 172.80.0.4:80                       3       15       15     1017     1032
 
-19:00:33 - INFO: Creating IPVS dummy interface
+23:39:37 - INFO: Creating IPVS dummy interface
 
-19:00:33 - INFO: Generating HTTP traffic
+23:39:37 - INFO: Generating HTTP traffic (Pod to IPVS Service)
 This is service #3
 This is service #2
 
@@ -88,14 +93,14 @@ This is service #2
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         18       83       80     5596     5504
+TCP  1.2.3.4:80                         18       82       80     5544     5504
   -> 172.80.0.2:80                       8       32       30     2154     2064
-  -> 172.80.0.3:80                       5       26       25     1747     1720
+  -> 172.80.0.3:80                       5       25       25     1695     1720
   -> 172.80.0.4:80                       5       25       25     1695     1720
 
-19:00:41 - INFO: Enabling Hairpin connections
+23:39:44 - INFO: Enabling Hairpin connections
 
-19:00:41 - INFO: Generating HTTP traffic
+23:39:44 - INFO: Generating HTTP traffic (Pod to IPVS Service)
 This is service #3
 This is service #2
 This is service #1
@@ -105,8 +110,8 @@ This is service #1
 IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port               Conns   InPkts  OutPkts  InBytes OutBytes
   -> RemoteAddress:Port
-TCP  1.2.3.4:80                         24      111      110     7526     7568
-  -> 172.80.0.2:80                      10       42       40     2832     2752
+TCP  1.2.3.4:80                         24      110      110     7474     7568
+  -> 172.80.0.2:80                      10       41       40     2780     2752
   -> 172.80.0.3:80                       7       34       35     2321     2408
   -> 172.80.0.4:80                       7       35       35     2373     2408
 ```

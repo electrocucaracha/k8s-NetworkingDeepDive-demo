@@ -24,7 +24,11 @@ function print_stats {
 }
 
 function generate_traffic {
-    info "Generating HTTP traffic"
+    if [[ "${1:-false}" == "false" ]]; then
+        info "Generating HTTP traffic (Host to IPVS Service)"
+    else
+        info "Generating HTTP traffic (Pod to IPVS Service)"
+    fi
     for _ in {1..6}; do
         if [[ "${1:-false}" == "false" ]]; then
             curl -s "$SERVICE_ADDRESS"
@@ -65,7 +69,6 @@ sudo ip addr add "$SERVICE_IP/32" dev kube-ipvs0
 # LAN (VxLAN) traffic for communication between Network namespaces
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
 sudo modprobe br_netfilter
-sudo sysctl --write net.bridge.bridge-nf-call-iptables=1 > /dev/null
 generate_traffic true
 
 info "Enabling Hairpin connections"

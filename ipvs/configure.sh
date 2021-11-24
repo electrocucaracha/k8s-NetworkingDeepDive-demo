@@ -95,6 +95,7 @@ if ! ip addr show cbr0; then
     sudo iptables --table filter --append FORWARD \
     --in-interface eth0 --out-interface cbr0 --jump ACCEPT
 
+    # Masquerade for solving hairpin purpose
     sudo ipset create KUBE-LOOP-BACK hash:ip,port,ip
     sudo iptables --table nat --append POSTROUTING --match set --match-set KUBE-LOOP-BACK dst,dst,src --jump MASQUERADE
 fi
@@ -110,6 +111,9 @@ sudo ipvsadm --add-service --tcp-service "$SERVICE_ADDRESS" --scheduler rr
 for i in {1..3}; do
     create_sandbox "$i"
 done
+
+# Veth pair
+ip link show type veth
 
 # Virtual Server table
 sudo ipvsadm --list --numeric
