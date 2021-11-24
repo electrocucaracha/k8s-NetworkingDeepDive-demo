@@ -22,9 +22,61 @@ Machine using the following instructions:
 
     vagrant up <pause|ipvs|flannel>
 
-## Linux Networking concepts
+## Linux interfaces for virtual networking
 
-### vtap
+Linux has rich virtual networking capabilities that are used as basis for
+hosting Virtual Machines and containers, as well as cloud environments.
+
+### Bonded interface
+
+Bonding driver provides a method for aggregating multiple network interfaces
+into a single logical "bonded" interface. The behavior of the bonded interface
+depends on the mode; generally speaking, modes provide either hot standby or
+load balancing services.
+
+### VLAN
+
+A VLAN, aka virtual LAN, separates broadcast domains by adding tags to network
+packets. VLANs allow network administrators to group hosts under the same switch
+or between different switches.
+
+### VXLAN
+
+VXLAN (Virtual eXtensible Local Area Network) is a tunneling protocol designed
+to solve the problem of limited VLAN IDs (4,096) in IEEE 802.1q. It is described
+by IETF RFC 7348.
+
+### MACVLAN
+
+With MACVLAN, you can create multiple interfaces with different Layer 2 (that
+is, Ethernet MAC) addresses on top of a single one.
+
+### IPVLAN
+
+IPVLAN is similar to MACVLAN with the difference being that the endpoints have
+the same MAC address.
+
+### VETH
+
+The VETH (virtual Ethernet) device is a local Ethernet tunnel. Devices are
+created in pairs, packets transmitted on one device in the pair are immediately
+received on the other device. When either device is down, the link state of the
+pair is down. These 2 devices can be imagined as being connected by a network
+cable; each veth-device of a pair can be attached to different virtual entities
+as OpenVswitch bridges, LXC containers or Linux standard bridges.
+
+### Dummy
+
+A dummy interface is entirely virtual like, for example, the loopback interface.
+The purpose of a dummy interface is to provide a device to route packets through
+without actually transmitting them.
+
+### TUN
+
+Network TUNnel, simulates a network layer device and operates in layer 3
+carrying IP packets.
+
+### TAP
 
 A virtual "tap" device is a single point to point device which can be used by a
 program in user-space or a virtual machine to send Ethernet packets on layer 2
@@ -35,15 +87,14 @@ ethernet interface - which then interacts with the fd. A tap device can on
 the other side be attached to a virtual Linux bridge; the kernel handles the
 packet transfer as if it occurred over a virtual bridge port.
 
-### veth
+### Bridge
 
-The "veth" devices are instead created as pairs of connected virtual Ethernet
-interfaces. These 2 devices can be imagined as being connected by a network
-cable; each veth-device of a pair can be attached to different virtual entities
-as OpenVswitch bridges, LXC containers or Linux standard bridges. veth pairs are
-ideal to connect virtual devices to each other.
+A bridge behaves like a network switch. It forwards packets between interfaces
+that are connected to it. It's usually used for forwarding packets on routers,
+on gateways, or between VMs and network namespaces on a host. It also supports
+STP, VLAN filter, and multicast snooping.
 
-### Aspects and properties of Linux bridges
+#### Aspects and properties
 
 - A "tap" device attached to one Linux bridge cannot be attached to another
   Linux bridge.

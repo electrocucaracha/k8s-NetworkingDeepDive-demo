@@ -46,6 +46,7 @@ href
 htngq
 https
 ICMP
+IETF
 img
 InActConn
 InBytes
@@ -58,6 +59,7 @@ InternalIP
 IPMASQ
 ips
 IPv
+IPVLAN
 IPVS
 kube
 kubelet
@@ -70,6 +72,7 @@ LocalAddress
 loopback
 LXC
 ly
+MACVLAN
 markdownlint
 Masq
 maxmtu
@@ -137,6 +140,9 @@ veth
 vethb
 VirtualBox
 virtualized
+VLAN
+VLANs
+VMs
 VNI
 vtap
 VTEP
