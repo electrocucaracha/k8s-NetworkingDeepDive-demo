@@ -75,11 +75,6 @@ function create_sandbox {
     add_endpoint "$ip_address"
 }
 
-# Enable IPv4 Forwarding
-# IP forwarding enables receiving traffic on our virtual ethernet device and 
-# forwarding it to another device and vice versa. 
-sudo sysctl --write net.ipv4.ip_forward=1
-
 # Configure Pod Subnet Bridge
 if ! ip addr show cbr0; then
     sudo ip link add dev cbr0 type bridge
@@ -87,16 +82,13 @@ if ! ip addr show cbr0; then
     sudo ip link set dev cbr0 up
 
     # Forward traffic from one veth to another veth
-    sudo iptables --table filter --append FORWARD \
-    --in-interface cbr0 --out-interface cbr0 --jump ACCEPT
 
-    sudo iptables --table filter --append FORWARD \
-    --in-interface cbr0 --out-interface eth0 --jump ACCEPT
-    sudo iptables --table filter --append FORWARD \
-    --in-interface eth0 --out-interface cbr0 --jump ACCEPT
-
-    # Masquerade for solving hairpin purpose
     sudo ipset create KUBE-LOOP-BACK hash:ip,port,ip
+    # Enable IPv4 Forwarding
+    # IP forwarding enables receiving traffic on our virtual ethernet device and
+    # forwarding it to another device and vice versa.
+    sudo sysctl --write net.ipv4.ip_forward=1
+    # Masquerade for solving hairpin purpose
     sudo iptables --table nat --append POSTROUTING --match set --match-set KUBE-LOOP-BACK dst,dst,src --jump MASQUERADE
 fi
 
@@ -124,3 +116,6 @@ sudo ipset list
 # Show IP tables
 sudo iptables -L -n -v
 sudo iptables -t nat -L -n -v
+
+# Show ARP tables
+ip neigh show dev cbr0
