@@ -25,9 +25,9 @@ function print_stats {
 
 function generate_traffic {
     if [[ "${1:-false}" == "false" ]]; then
-        info "Generating HTTP traffic (Host to IPVS Service)"
+        info "Generating HTTP traffic (Host to Service)"
     else
-        info "Generating HTTP traffic (Pod to IPVS Service)"
+        info "Generating HTTP traffic (Namespace to Service)"
     fi
     for _ in {1..6}; do
         if [[ "${1:-false}" == "false" ]]; then
@@ -43,19 +43,6 @@ function generate_traffic {
 # Round Robin - Distributes jobs equally amongst the available real server
 info "Using Round Robin scheduling algorithm"
 generate_traffic
-
-info "Increase pod1 weight"
-ip_addr=${POD_SUBNET_PREFIX}$((1+1))
-sudo ipvsadm --edit-server --tcp-service "$SERVICE_ADDRESS" --real-server "$ip_addr" --masquerading --weight 3
-
-# Weighted Round Robin - Assigns jobs to real servers proportionally to there real servers’ weight.
-sudo ipvsadm --edit-service --tcp-service "$SERVICE_ADDRESS" --scheduler wrr
-sudo ipvsadm --list --numeric
-info "Using Weighted Round Robin scheduling algorithm"
-generate_traffic
-
-# Restablish to Round Robin scheduling algorithm
-sudo ipvsadm --edit-service --tcp-service "$SERVICE_ADDRESS" --scheduler rr
 
 info "Validating communication between Pod and ClusterIP"
 generate_traffic true
@@ -82,3 +69,13 @@ sudo ip link set cbr0 promisc on
 # tracking.
 sudo sysctl --write net.ipv4.vs.conntrack=1 > /dev/null
 generate_traffic true
+
+info "Increase pod1 weight"
+ip_addr=${POD_SUBNET_PREFIX}$((1+1))
+sudo ipvsadm --edit-server --tcp-service "$SERVICE_ADDRESS" --real-server "$ip_addr" --masquerading --weight 3
+
+# Weighted Round Robin - Assigns jobs to real servers proportionally to there real servers’ weight.
+sudo ipvsadm --edit-service --tcp-service "$SERVICE_ADDRESS" --scheduler wrr
+sudo ipvsadm --list --numeric
+info "Using Weighted Round Robin scheduling algorithm"
+generate_traffic
