@@ -18,9 +18,12 @@ CMD
 CNI
 cniVersion
 codel
+Comunidad
 Conns
 coredns
+Costarica
 dev
+DevOps
 df
 dns
 dockershim
@@ -80,6 +83,7 @@ minmtu
 mkf
 MTU
 MULTICAST
+MX
 namespace
 namespaces
 netns
@@ -118,6 +122,7 @@ rbng
 RemoteAddress
 RunPodSandbox
 segs
+slideshare
 src
 srcport
 STIME
@@ -138,6 +143,7 @@ uplink
 vagrantup
 veth
 vethb
+VictorMorales
 VirtualBox
 virtualized
 VLAN

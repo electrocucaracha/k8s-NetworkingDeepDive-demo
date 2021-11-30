@@ -6,6 +6,12 @@
 This project collects instructions to discover, analyze and learn how
 Kubernetes connects containers in different setups.
 
+### Presentations
+
+- [Cloud-Native MX](https://www.slideshare.net/VictorMorales34/pod-sandbox-workflow-creation-from-dockershim)
+- [Comunidad DevOps + Cloud Native Costarica](https://www.slideshare.net/VictorMorales34/deep-dive-networking)
+- [Kubernetes Community Days GT 2021](https://www.slideshare.net/VictorMorales34/understanding-kube-proxy-in-ipvs-mode)
+
 ## Virtual Machines
 
 The [Vagrant tool][1] is used for provisioning Ubuntu Focal Virtual
