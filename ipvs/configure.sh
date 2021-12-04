@@ -62,24 +62,27 @@ function create_sandbox {
     # Create veth pair and connect namespace with bridge
     sudo ip link add "veth$id" type veth peer name "veth${id}p"
 
-    sudo ip link set dev "veth${id}" master cbr0
+    sudo ip link set dev "veth${id}" master cni0
     sudo ip link set dev "veth${id}" up
 
     sudo ip link set dev "veth${id}p" netns "$pod_name"
+    # Rename container virtual nic
+    sudo ip netns exec "$pod_name" ip link set dev "veth${id}p" down
+    sudo ip netns exec "$pod_name" ip link set dev "veth${id}p" name eth0
 
     # Configure veth connected to the namespace
-    netns_exec "$pod_name" ip link set dev "veth${id}p" up
-    netns_exec "$pod_name" ip address add "$ip_address/24" dev "veth${id}p"
+    netns_exec "$pod_name" ip link set dev eth0 up
+    netns_exec "$pod_name" ip address add "$ip_address/24" dev eth0
     netns_exec "$pod_name" ip route add default via "${POD_SUBNET_GW}"
 
     add_endpoint "$ip_address"
 }
 
 # Configure Pod Subnet Bridge
-if ! ip addr show cbr0; then
-    sudo ip link add dev cbr0 type bridge
-    sudo ip address add "${POD_SUBNET_GW}/24" dev cbr0
-    sudo ip link set dev cbr0 up
+if ! ip addr show cni0; then
+    sudo ip link add dev cni0 type bridge
+    sudo ip address add "${POD_SUBNET_GW}/24" dev cni0
+    sudo ip link set dev cni0 up
 
     # Forward traffic from one veth to another veth
 
@@ -118,4 +121,4 @@ sudo iptables -L -n -v
 sudo iptables -t nat -L -n -v
 
 # Show ARP tables
-ip neigh show dev cbr0
+ip neigh show dev cni0

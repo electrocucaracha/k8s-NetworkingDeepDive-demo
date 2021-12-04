@@ -62,7 +62,7 @@ info "Enabling Hairpin connections"
 # Promiscuous mode is a mode causes the controller to pass all traffic it
 # receives to the central processing unit (CPU) rather than passing only the
 # frames that the controller is specifically programmed to receive.
-sudo ip link set cbr0 promisc on
+sudo ip link set cni0 promisc on
 # Maintain connection tracking entries for connections handled by IPVS. This
 # should be enabled if connections handled by IPVS are to be also handled by
 # stateful firewall rules. That is, iptables rules that make use of connection
