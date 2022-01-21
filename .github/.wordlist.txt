@@ -61,6 +61,8 @@ integrations
 InternalIP
 IPMASQ
 ips
+iptable
+iptables
 IPv
 IPVLAN
 IPVS
@@ -97,6 +99,7 @@ noqueue
 noudp
 NPROCS
 NSFS
+Nudin
 numrxqueues
 numtxqueues
 ol
@@ -146,6 +149,7 @@ vethb
 VictorMorales
 VirtualBox
 virtualized
+vis
 VLAN
 VLANs
 VMs

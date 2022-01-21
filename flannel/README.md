@@ -10,6 +10,19 @@ directly to store the network configuration, the allocated subnets, and any
 auxiliary data (such as the host's public IP). Packets are forwarded using one
 of several backend mechanisms including VXLAN and various cloud integrations.
 
+## NAT table rules
+
+The following diagrams were created with [iptables-vis](https://github.com/Nudin/iptable_vis)
+tool and pretend to clarify the rules created by Kubernetes components:
+
+### Controller node
+
+![k8s-control-plane](../img/controller.svg)
+
+### Worker node
+
+![k8s-worker](../img/worker.svg)
+
 ## Demo output example
 
 The following output was capture from the _deploy.log_ file generated
