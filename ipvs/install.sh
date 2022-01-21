@@ -13,6 +13,8 @@ set -o xtrace
 set -o errexit
 set -o nounset
 
+export PKG_COMMANDS_LIST="ipvsadm,ipset"
+
 if ! command -v curl; then
     # shellcheck disable=SC1091
     source /etc/os-release || source /usr/lib/os-release
@@ -24,13 +26,5 @@ if ! command -v curl; then
     esac
 fi
 # Install dependencies
-pkgs=""
-for pkg in ipvsadm ipset; do
-    if ! command -v "$pkg" > /dev/null; then
-        pkgs+=" $pkg"
-    fi
-done
-if [ -n "$pkgs" ]; then
-    # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
-    curl -fsSL http://bit.ly/install_pkg | PKG=$pkgs bash
-fi
+# NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
+curl -fsSL http://bit.ly/install_pkg | bash

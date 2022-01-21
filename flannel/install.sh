@@ -14,6 +14,9 @@ set -o errexit
 set -o nounset
 
 export PKG_FLANNEL_VERSION=${PKG_FLANNEL_VERSION:-1.0.0}
+export PKG="cni-plugins"
+export PKG_COMMANDS_LIST="docker,kind,cni-plugins,kubectl"
+export PKG_KREW_PLUGINS_LIST=" "
 
 if ! command -v curl; then
     # shellcheck disable=SC1091
@@ -26,13 +29,5 @@ if ! command -v curl; then
     esac
 fi
 # Install dependencies
-pkgs=""
-for pkg in docker kind cni-plugins kubectl; do
-    if ! command -v "$pkg"; then
-        pkgs+=" $pkg"
-    fi
-done
-if [ -n "$pkgs" ]; then
-    # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
-    curl -fsSL http://bit.ly/install_pkg | PKG=$pkgs bash
-fi
+# NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
+curl -fsSL http://bit.ly/install_pkg | bash
