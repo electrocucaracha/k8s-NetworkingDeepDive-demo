@@ -46,24 +46,24 @@ fi
 
 # umoci - Modifies Open Container Images
 if ! command -v umoci; then
-    sudo curl -o /usr/bin/umoci -sL https://github.com/opencontainers/umoci/releases/download/v0.4.6/umoci.amd64
+    sudo curl -o /usr/bin/umoci -sL https://github.com/opencontainers/umoci/releases/download/v0.4.7/umoci.amd64
     sudo chmod +x /usr/bin/umoci
 fi
 
 # cnitool - Executes a CNI configuration
 if ! command -v cnitool; then
-    go get github.com/containernetworking/cni/cnitool
+    go install github.com/containernetworking/cni/cnitool@v1.0.1
     sudo mv ~/go/bin/cnitool /usr/bin/
 fi
 
 # runc - CLI tool for spawning and running containers according to the OCI specification.
-if ! command -v runc  || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.0.0-rc95" ]; then
-    sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.0.0-rc95/runc.amd64
+if ! command -v runc  || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.1.0" ]; then
+    sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.1.0/runc.amd64
     sudo chmod +x /usr/bin/runc
 fi
 
 # recvtty - Reference implementation of a consumer of runC's --console-socket API
 if ! command -v recvtty; then
-    go get github.com/opencontainers/runc/contrib/cmd/recvtty@v1.0.0-rc95
+    go install github.com/opencontainers/runc/contrib/cmd/recvtty@v1.1.0
     sudo mv ~/go/bin/recvtty /usr/bin/
 fi
