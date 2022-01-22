@@ -1,4 +1,4 @@
 .vagrant/
 .tox/
 super-linter.log
-dictionary.dic
+*.dic

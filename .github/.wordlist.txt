@@ -154,7 +154,6 @@ VLAN
 VLANs
 VMs
 VNI
-vtap
 VTEP
 VtepMAC
 VXLAN
