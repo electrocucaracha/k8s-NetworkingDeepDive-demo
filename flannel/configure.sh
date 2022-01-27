@@ -39,7 +39,7 @@ if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
     done
 EONG
 fi
-kubectl apply -f ./kube-flannel.yml
+kubectl apply -f ./kube-flannel.yaml
 
 # Install Network tooling
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do

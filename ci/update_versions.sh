@@ -75,3 +75,6 @@ sed -i "s|containernetworking/cni/cnitool@v.*|containernetworking/cni/cnitool@v$
 
 # Update go
 sed -i "s|go-version: '.*|go-version: '$(get_version go)'|g" .github/workflows/ci.yml
+
+# Update flannel definition
+wget -q -O ./flannel/kube-flannel.yaml https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
