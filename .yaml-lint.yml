@@ -10,5 +10,12 @@
 
 extends: default
 
+yaml-files:
+  - '*.yml'
+
+ignore: |
+  .tox/
+  *.yaml
+
 rules:
   line-length: disable
