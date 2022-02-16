@@ -17,7 +17,7 @@ non-docker tools.
 
 ## Demo output example
 
-The following output was capture from the _deploy.log_ file generated
+The following output was capture from the *deploy.log* file generated
 from the `vagrant up` execution.
 
 ```bash
