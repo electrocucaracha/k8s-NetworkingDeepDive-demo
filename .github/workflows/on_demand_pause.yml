@@ -1,0 +1,47 @@
+---
+# SPDX-license-identifier: Apache-2.0
+##############################################################################
+# Copyright (c) 2022
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+name: Check Pause Demo
+# yamllint disable-line rule:truthy
+on:
+  push:
+    paths:
+      - 'pause/*'
+  pull_request_review:
+    types:
+      - submitted
+    paths:
+      - 'pause/*'
+
+jobs:
+  check-pause-demo:
+    name: Check Pause demo on Ubuntu Virtual Environment
+    runs-on: ubuntu-20.04
+    if: >-
+      (
+        github.event_name == 'pull_request_review' &&
+        github.event.review.state == 'approved'
+      ) ||
+      github.event_name != 'pull_request_review'
+    env:
+      GO111MODULE: "on"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.18'
+      - name: Setup common folder
+        run: mkdir -p /opt/common && cp ./common/* /opt/common
+      - name: Install dependencies
+        run: cd pause; ./install.sh
+      - name: Configure services
+        run: cd pause; ./configure.sh
+      - name: Run demo
+        run: cd pause; ./demo.sh
