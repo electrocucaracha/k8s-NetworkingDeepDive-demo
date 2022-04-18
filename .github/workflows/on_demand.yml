@@ -1,0 +1,87 @@
+---
+# SPDX-license-identifier: Apache-2.0
+##############################################################################
+# Copyright (c) 2022
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+name: Check Demos
+# yamllint disable-line rule:truthy
+on:
+  push:
+    paths:
+      - 'pause/*'
+      - 'ipvs/*'
+      - 'flannel/*'
+  pull_request_review:
+    types:
+      - submitted
+    paths:
+      - 'pause/*'
+      - 'ipvs/*'
+      - 'flannel/*'
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    if: >-
+      (
+        github.event_name == 'pull_request_review' &&
+        github.event.review.state == 'approved'
+      ) ||
+      github.event_name != 'pull_request_review'
+    outputs:
+      pause: ${{ steps.filter.outputs.pause }}
+      ipvs: ${{ steps.filter.outputs.ipvs }}
+      flannel: ${{ steps.filter.outputs.flannel }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        if: ${{ !env.ACT }}
+        id: filter
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filters: |
+            pause:
+              - 'pause/*'
+            ipvs:
+              - 'ipvs/*'
+            flannel:
+              - 'flannel/*'
+  check-pause-demo:
+    name: Check Pause demo on Ubuntu Virtual Environment
+    runs-on: ubuntu-20.04
+    needs: changes
+    if: needs.changes.outputs.pause == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+          check-latest: true
+      - uses: ./.github/actions/check-demo
+        with:
+          demo-type: pause
+  check-ipvs-demo:
+    name: Check IPVS demo on Ubuntu Virtual Environment
+    runs-on: ubuntu-20.04
+    needs: changes
+    if: needs.changes.outputs.ipvs == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/check-demo
+        with:
+          demo-type: ipvs
+  check-flannel-demo:
+    name: Check Flannel demo on Ubuntu Virtual Environment
+    runs-on: ubuntu-20.04
+    needs: changes
+    if: needs.changes.outputs.flannel == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/check-demo
+        with:
+          demo-type: flannel
