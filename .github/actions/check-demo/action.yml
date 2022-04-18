@@ -1,0 +1,33 @@
+---
+# SPDX-license-identifier: Apache-2.0
+##############################################################################
+# Copyright (c) 2022
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0
+##############################################################################
+
+name: Check Demo
+inputs:
+  demo-type:
+    description: 'Demo type'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup common folder
+      shell: bash
+      run: mkdir -p /opt/common && cp ./common/* /opt/common
+    - name: Install dependencies
+      shell: bash
+      env:
+        GO111MODULE: "on"
+      run: cd ${{ inputs.demo-type }}; ./install.sh
+    - name: Configure services
+      shell: bash
+      run: cd ${{ inputs.demo-type }}; ./configure.sh
+    - name: Run demo
+      shell: bash
+      run: cd ${{ inputs.demo-type }}; ./demo.sh
