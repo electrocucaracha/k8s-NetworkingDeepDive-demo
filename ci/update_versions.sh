@@ -73,8 +73,5 @@ sed -i "s|opencontainers/runc/contrib/cmd/recvtty@v.*|opencontainers/runc/contri
 # Update cnitool
 sed -i "s|containernetworking/cni/cnitool@v.*|containernetworking/cni/cnitool@v$(get_version github_release containernetworking/cni)|g" pause/install.sh
 
-# Update go
-sed -i "s|go-version: '.*|go-version: '$(get_version go)'|g" .github/workflows/on_demand_pause.yml
-
 # Update flannel definition
 wget -q -O ./flannel/kube-flannel.yaml https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
