@@ -16,14 +16,18 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    GO111MODULE: "on"
   steps:
     - name: Setup common folder
+      shell: bash
       run: mkdir -p /opt/common && cp ./common/* /opt/common
     - name: Install dependencies
+      shell: bash
+      env:
+        GO111MODULE: "on"
       run: cd ${{ inputs.demo-type }}; ./install.sh
     - name: Configure services
+      shell: bash
       run: cd ${{ inputs.demo-type }}; ./configure.sh
     - name: Run demo
+      shell: bash
       run: cd ${{ inputs.demo-type }}; ./demo.sh
