@@ -15,17 +15,17 @@ networking:
   disableDefaultCNI: true
 nodes:
   - role: control-plane
-    image: kindest/node:v1.23.5
+    image: kindest/node:v1.24.0
     extraMounts:
       - hostPath: /opt/containernetworking/plugins
         containerPath: /opt/cni/bin
   - role: worker
-    image: kindest/node:v1.23.5
+    image: kindest/node:v1.24.0
     extraMounts:
       - hostPath: /opt/containernetworking/plugins
         containerPath: /opt/cni/bin
   - role: worker
-    image: kindest/node:v1.23.5
+    image: kindest/node:v1.24.0
     extraMounts:
       - hostPath: /opt/containernetworking/plugins
         containerPath: /opt/cni/bin
