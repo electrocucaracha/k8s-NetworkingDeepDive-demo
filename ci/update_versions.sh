@@ -60,7 +60,7 @@ sed -i "s|PKG_FLANNEL_VERSION:-.*|PKG_FLANNEL_VERSION:-$PKG_FLANNEL_VERSION}|g" 
 
 # Update KinD node image version
 kind_version="$(get_version docker_tag kindest/node)"
-find flannel -type f -name 'kind-config*.yml' -exec sed -i "s|image: kindest/node:v.*|image: kindest/node:v$kind_version|g" {} \;
+find . -type f -name 'kind-config*.yml' -exec sed -i "s|image: kindest/node:v.*|image: kindest/node:v$kind_version|g" {} \;
 
 # Update umoci
 sed -i "s|umoci/releases/download/v.*|umoci/releases/download/v$(get_version github_release opencontainers/umoci)/umoci.amd64|g" pause/install.sh
