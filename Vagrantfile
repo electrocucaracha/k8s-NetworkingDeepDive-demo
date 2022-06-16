@@ -13,7 +13,7 @@
 host = RbConfig::CONFIG['host_os']
 
 no_proxy = ENV['NO_PROXY'] || ENV['no_proxy'] || '127.0.0.1,localhost'
-(1..254).each do |i| 
+(1..254).each do |i|
   no_proxy += ",10.0.2.#{i}"
 end
 
@@ -37,7 +37,7 @@ Vagrant.configure('2') do |config|
   %i[virtualbox libvirt].each do |provider|
     config.vm.provider provider do |p|
       p.cpus = ENV['CPUS'] || 2
-      p.memory = ENV['MEMORY'] || mem / 1024 / 4 
+      p.memory = ENV['MEMORY'] || mem / 1024 / 4
     end
   end
 
@@ -69,13 +69,14 @@ Vagrant.configure('2') do |config|
     config.proxy.enabled = { docker: false }
   end
 
-  %w[pause ipvs flannel].each do |instance|
+  %w[pause ipvs flannel bash].each do |instance|
     config.vm.define instance do |demo|
-      demo.vm.synced_folder './common', '/opt/common'
-      demo.vm.synced_folder instance.to_s, '/vagrant'
-      demo.vm.provider :libvirt do |v, override|
-        override.vm.synced_folder './common', '/opt/common', type: "nfs"
-        override.vm.synced_folder instance.to_s, '/vagrant', type: "nfs"
+      [{ :host => './common', :guest => '/opt/common' },
+       { :host => instance.to_s, :guest => '/vagrant' }].each do |mapping|
+        demo.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}"
+        demo.vm.provider :libvirt do |v, override|
+          override.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}", type: "nfs"
+        end
       end
       demo.vm.provision 'shell', privileged: false, inline: <<~SHELL
         set -o errexit
