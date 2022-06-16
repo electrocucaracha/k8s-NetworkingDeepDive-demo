@@ -1,0 +1,4 @@
+--default-path "**/spec"
+--execdir @basedir/bin
+--shell bash
+--env __name__=__test__

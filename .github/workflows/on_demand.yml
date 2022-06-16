@@ -16,6 +16,7 @@ on:
       - 'pause/*'
       - 'ipvs/*'
       - 'flannel/*'
+      - 'bash/*'
   pull_request_review:
     types:
       - submitted
@@ -23,6 +24,7 @@ on:
       - 'pause/*'
       - 'ipvs/*'
       - 'flannel/*'
+      - 'bash/*'
 
 jobs:
   changes:
@@ -37,6 +39,7 @@ jobs:
       pause: ${{ steps.filter.outputs.pause }}
       ipvs: ${{ steps.filter.outputs.ipvs }}
       flannel: ${{ steps.filter.outputs.flannel }}
+      bash: ${{ steps.filter.outputs.bash }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -51,6 +54,8 @@ jobs:
               - 'ipvs/*'
             flannel:
               - 'flannel/*'
+            bash:
+              - 'bash/*'
   check-pause-demo:
     name: Check Pause demo on Ubuntu Virtual Environment
     runs-on: ubuntu-20.04
@@ -85,3 +90,27 @@ jobs:
       - uses: ./.github/actions/check-demo
         with:
           demo-type: flannel
+  check-bash-demo:
+    name: Check Bash demo on Ubuntu Virtual Environment
+    runs-on: ubuntu-20.04
+    needs: changes
+    if: needs.changes.outputs.bash == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure mapping
+        run: |
+          mkdir -p /vagrant/bin
+          cp ./bash/bin/plugin.sh /vagrant/bin
+      - uses: ./.github/actions/check-demo
+        with:
+          demo-type: bash
+  check-bash-shellspec:
+    name: Run BDD shell specs for Bash demo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install ShellSpec
+        run: curl -fsSL https://github.com/shellspec/shellspec/releases/latest/download/shellspec-dist.tar.gz | tar -xz -C ..
+      - name: Run Shellspec
+        shell: 'script -q -e -c "bash {0}"'
+        run: ../shellspec/shellspec --profile --xtrace
