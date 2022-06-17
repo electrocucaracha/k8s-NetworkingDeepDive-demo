@@ -33,7 +33,7 @@ trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
     newgrp docker <<EONG
     kind create cluster --name k8s --config=./kind-config${K8S_FEATURE:-}.yml
-    for img in quay.io/coreos/flannel:v0.14.0 ubuntu:20.04 busybox:1.34; do
+    for img in quay.io/coreos/flannel:v0.14.0 ubuntu:20.04 busybox:1.35.0; do
         docker pull \$img
         kind load docker-image \$img --name k8s
     done
