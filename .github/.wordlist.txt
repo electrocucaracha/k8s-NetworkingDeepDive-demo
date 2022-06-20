@@ -97,11 +97,11 @@ MTU
 MULTICAST
 MX
 mynet
-Namespace
+NAMESPACE
 namespaces
-netns
+NETNS
 NETNSID
-nic
+NIC
 NOARP
 nodeName
 nolearning
@@ -121,9 +121,9 @@ OutBytes
 OutPkts
 PID
 pinghost
-podCIDR
+PodCIDR
 PodCIDRs
-podIP
+PodIP
 PPID
 pre
 preconfigured
