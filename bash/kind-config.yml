@@ -16,7 +16,7 @@ networking:
   podSubnet: "10.244.0.0/16"
 nodes:
   - role: control-plane
-    image: kindest/node:v1.24.1
+    image: kindest/node:v1.24.2
     extraMounts:
       - hostPath: /vagrant/bin
         containerPath: /opt/cni/bash/bin
