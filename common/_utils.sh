@@ -8,6 +8,12 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 
+# error() - This function prints an error message in the standard output
+function error {
+    _print_msg "ERROR" "$1"
+    exit 1
+}
+
 # info() - This function prints an information message in the standard output
 function info {
     _print_msg "INFO" "$1"
