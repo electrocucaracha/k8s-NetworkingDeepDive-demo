@@ -17,6 +17,7 @@ on:
       - 'ipvs/*'
       - 'flannel/*'
       - 'bash/*'
+      - 'ebpf/*'
   pull_request_review:
     types:
       - submitted
@@ -25,6 +26,7 @@ on:
       - 'ipvs/*'
       - 'flannel/*'
       - 'bash/*'
+      - 'ebpf/*'
 
 jobs:
   changes:
@@ -40,6 +42,7 @@ jobs:
       ipvs: ${{ steps.filter.outputs.ipvs }}
       flannel: ${{ steps.filter.outputs.flannel }}
       bash: ${{ steps.filter.outputs.bash }}
+      ebpf: ${{ steps.filter.outputs.ebpf }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -56,6 +59,8 @@ jobs:
               - 'flannel/*'
             bash:
               - 'bash/*'
+            ebpf:
+              - 'ebpf/*'
   check-pause-demo:
     name: Check Pause demo on Ubuntu Virtual Environment
     runs-on: ubuntu-20.04
@@ -114,3 +119,13 @@ jobs:
       - name: Run Shellspec
         shell: 'script -q -e -c "bash {0}"'
         run: ../shellspec/shellspec --profile --xtrace
+  check-ebpf-demo:
+    name: Check eBPF demo on Ubuntu Virtual Environment
+    runs-on: ubuntu-20.04
+    needs: changes
+    if: needs.changes.outputs.ebpf == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/check-demo
+        with:
+          demo-type: ebpf

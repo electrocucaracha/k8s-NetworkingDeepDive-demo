@@ -69,7 +69,7 @@ Vagrant.configure('2') do |config|
     config.proxy.enabled = { docker: false }
   end
 
-  %w[pause ipvs flannel bash].each do |instance|
+  %w[pause ipvs flannel bash ebpf].each do |instance|
     config.vm.define instance do |demo|
       [{ :host => './common', :guest => '/opt/common' },
        { :host => instance.to_s, :guest => '/vagrant' }].each do |mapping|
