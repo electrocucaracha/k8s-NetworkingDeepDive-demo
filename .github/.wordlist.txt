@@ -10,6 +10,7 @@ ARP
 backend
 balancer
 bbf
+bd
 bdf
 brd
 busybox
@@ -37,6 +38,7 @@ Dockershim's
 Droping
 ds
 dstport
+eBPF
 ECA
 eea
 electrocucaracha
@@ -44,6 +46,8 @@ envs
 etcd
 eth
 eui
+extensibility
+fbfdb
 fc
 fcd
 feda
@@ -99,6 +103,7 @@ MX
 mynet
 NAMESPACE
 namespaces
+netif
 NETNS
 NETNSID
 NIC
@@ -121,6 +126,7 @@ OutBytes
 OutPkts
 PID
 pinghost
+pingpong
 PodCIDR
 PodCIDRs
 PodIP
@@ -136,10 +142,12 @@ qlen
 rbng
 Reachability
 RemoteAddress
+ret
 RunPodSandbox
 runtime
 sdtout
 segs
+skb
 slideshare
 src
 srcport
@@ -179,6 +187,7 @@ VXLAN
 WoPVZrW
 wrr
 wzq
+xmit
 xvvk
 zerocsumrx
 zerocsumtx
