@@ -13,6 +13,9 @@ set -o xtrace
 set -o errexit
 set -o nounset
 
+# shellcheck disable=SC1091
+source /opt/common/_utils.sh
+
 function _get_pod_cidr {
     pod_cidr=""
     attempt_counter=0
@@ -24,8 +27,7 @@ function _get_pod_cidr {
             echo "$pod_cidr"
             break
         elif [ ${attempt_counter} -eq ${max_attempts} ];then
-            echo "Max attempts reached"
-            exit 1
+            error "Max attempts reached"
         fi
         attempt_counter=$((attempt_counter+1))
         sleep $((attempt_counter*2))
