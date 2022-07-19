@@ -16,7 +16,7 @@ if [[ "${DEBUG:-false}" == "true" ]]; then
     set -o xtrace
 fi
 
-IP_STORE=/tmp/reserved_ips # all reserved ips will be stored there
+reserved_ips_file=/tmp/reserved_ips # all reserved ips will be stored there
 all_ips_file=/tmp/all_ips
 rollback="echo 'Rolling back actions';"
 
@@ -57,7 +57,7 @@ function allocate_ip {
 
     for ip in "${all_ips[@]}"; do
         if [[ "${reserved_ips[*]}" != *${ip}* ]]; then
-            echo "$ip" >> $IP_STORE
+            echo "$ip" >> $reserved_ips_file
             output+="$ip\n"
             break
         fi
@@ -74,10 +74,10 @@ function _get_all_ip_list {
 }
 
 function _get_reserved_ip_list {
-    reserved_ips=$(cat $IP_STORE 2> /dev/null || printf '%s\n' "$@" )
+    reserved_ips=$(cat $reserved_ips_file 2> /dev/null || printf '%s\n' "$@" )
     # shellcheck disable=SC2206
     reserved_ips=(${reserved_ips[@]})
-    printf '%s\n' "${reserved_ips[@]}" | sort | uniq | tee  $IP_STORE
+    printf '%s\n' "${reserved_ips[@]}" | sort | uniq | tee  $reserved_ips_file
 }
 
 function _get_rand_if_name {
@@ -104,11 +104,11 @@ function add {
     debug "gw_ip: $gw_ip"
     container_ip=${output[1]}
     if [[ -z "$container_ip" ]]; then
-        [ -f "$IP_STORE" ] && rm "$IP_STORE"
+        [ -f "$reserved_ips_file" ] && rm "$reserved_ips_file"
         error "It couldn't discover an IP address for the container"
     fi
     debug "container_ip: $container_ip"
-    _add_rollback "sed -i \"/$container_ip/d\" $IP_STORE;"
+    _add_rollback "sed -i \"/$container_ip/d\" $reserved_ips_file;"
 
     info "Binding IP address"
     if_name="$(_get_rand_if_name)"
@@ -159,7 +159,7 @@ function del {
     ip=$(ip netns exec "$CNI_CONTAINERID" ip addr show "$CNI_IFNAME" | awk '/inet / {print $2}' | sed  s%/.*%% || echo "")
     debug "ip: $ip"
     if [ -n "$ip" ]; then
-        sed -i "/$ip/d" $IP_STORE
+        sed -i "/$ip/d" $reserved_ips_file
     fi
 }
 
