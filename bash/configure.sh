@@ -16,6 +16,8 @@ set -o nounset
 # shellcheck disable=SC1091
 source /opt/common/_utils.sh
 
+network_id="10.244.0.0/16"
+
 function _get_pod_cidr {
     pod_cidr=""
     attempt_counter=0
@@ -50,11 +52,30 @@ function get_status {
     kubectl describe nodes
 }
 
+if [ -z "$(sudo docker images kindest/node:cni-bash -q)" ]; then
+    sudo docker build --tag kindest/node:cni-bash --no-cache .
+fi
+
 trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
-    newgrp docker <<EONG
-    kind create cluster --name k8s --config=./kind-config.yml
-EONG
+    cat << EOF | sudo kind create cluster --name k8s --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  kubeProxyMode: "ipvs"
+  disableDefaultCNI: true
+  podSubnet: "$network_id"
+nodes:
+  - role: control-plane
+    image: kindest/node:cni-bash
+    extraMounts:
+      - hostPath: /opt/containernetworking/plugins
+        containerPath: /opt/cni/plugins/bin
+EOF
+    mkdir -p "$HOME/.kube"
+    sudo cp /root/.kube/config "$HOME/.kube/config"
+    sudo chown -R "$USER" "$HOME/.kube/"
+    chmod 600 "$HOME/.kube/config"
 fi
 
 for node in $(sudo docker ps --filter "name=k8s-*" --format "{{.Names}}"); do
@@ -64,19 +85,17 @@ for node in $(sudo docker ps --filter "name=k8s-*" --format "{{.Names}}"); do
   "cniVersion": "0.3.1",
   "name": "mynet",
   "type": "bash-cni",
-  "network": "10.244.0.0/16",
+  "network": "$network_id",
   "subnet": "$pod_cidr"
 }
 EOF
     cloud_init="
-apt-get update && apt-get install -y --no-install-recommends bridge-utils jq prips
 brctl addbr cni0
 ip link set cni0 up
 ip addr add ${pod_cidr%.*}.1/24 dev cni0
 "
     sudo docker cp /tmp/10-bash-cni-plugin.conf "$node":/etc/cni/net.d/10-bash-cni-plugin.conf
     sudo docker exec "$node" bash -c "$cloud_init"
-    sudo docker exec "$node" ln -s /opt/cni/bash/bin/plugin.sh /opt/cni/bin/bash-cni
 done
 
 # Wait for node readiness
