@@ -1,5 +1,5 @@
-from bcc import BPF
-from pyroute2 import IPRoute
+from bcc import BPF  # pylint: disable=import-error
+from pyroute2 import IPRoute  # pylint: disable=import-error
 
 interface = "eth0"
 
