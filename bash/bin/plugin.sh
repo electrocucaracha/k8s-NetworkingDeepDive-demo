@@ -164,7 +164,7 @@ function del {
 }
 
 function main {
-    [[ "K8S_POD_NAMESPACE=default" != *${CNI_ARGS}* ]] && export DEBUG=true
+    [[ "$CNI_ARGS" == *'K8S_POD_NAMESPACE=default;'* ]] && export DEBUG=true
 
     exec 3>&1 # make stdout available as fd 3 for the result
     exec &>> /var/log/bash-cni-plugin.log
