@@ -1,6 +1,7 @@
 # Kubernetes Networking deep dive Demo
 <!-- markdown-link-check-disable-next-line -->
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![visitors](https://visitor-badge.glitch.me/badge?page_id=electrocucaracha.k8s-NetworkingDeepDive-demo)
 
 ## Summary
 
