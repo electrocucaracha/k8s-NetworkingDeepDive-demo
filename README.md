@@ -129,5 +129,12 @@ STP, VLAN filter, and multicast snooping.
   Linux bridge cascading). You can neither connect a Linux bride to another
   Linux bridge via a "tap" device.
 
+## Contribution
+
+This is an open project, several individuals contribute in different forms like
+coding, documenting, testing, spreading the word at events within others.
+
+![Visualization of the codebase](./codebase-structure.svg)
+
 [1]: https://www.vagrantup.com/
 [2]: https://github.com/electrocucaracha/bootstrap-vagrant

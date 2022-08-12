@@ -22,6 +22,7 @@ ClusterIP
 CMD
 CNI
 cniVersion
+codebase
 codel
 Comunidad
 Conns
@@ -60,6 +61,7 @@ gw
 href
 htngq
 https
+IBnyiAgw
 ICMP
 IETF
 IFNAME
@@ -83,6 +85,7 @@ IPVS
 kube
 Kubelet
 Kubernetes
+kvdx
 KVM
 lft
 Libvirt
@@ -106,6 +109,7 @@ namespaces
 netif
 NETNS
 NETNSID
+NetworkingDeepDive
 NIC
 NOARP
 nodeName
@@ -120,6 +124,7 @@ numrxqueues
 numtxqueues
 ol
 onlink
+OpenInfra
 opensource
 OpenVswitch
 OutBytes
@@ -189,6 +194,7 @@ wrr
 wzq
 xmit
 xvvk
+youtu
 zerocsumrx
 zerocsumtx
 zj
