@@ -9,9 +9,10 @@ Kubernetes connects containers in different setups.
 
 ### Presentations
 
-- [Cloud-Native MX](https://www.slideshare.net/VictorMorales34/pod-sandbox-workflow-creation-from-dockershim)
-- [Comunidad DevOps + Cloud Native Costarica](https://www.slideshare.net/VictorMorales34/deep-dive-networking)
-- [Kubernetes Community Days GT 2021](https://www.slideshare.net/VictorMorales34/understanding-kube-proxy-in-ipvs-mode)
+- Cloud-Native MX ([slides](https://www.slideshare.net/VictorMorales34/pod-sandbox-workflow-creation-from-dockershim)|[video](https://youtu.be/Gi_IBnyiAgw?t=2613))
+- Comunidad DevOps + Cloud Native Costarica ([slides](https://www.slideshare.net/VictorMorales34/deep-dive-networking))
+- Kubernetes Community Days GT 2021 ([slides](https://www.slideshare.net/VictorMorales34/understanding-kube-proxy-in-ipvs-mode)|[video](https://youtu.be/fT94W7kvdx4))
+- OpenInfra Days Mexico 2022 ([slides](https://www.slideshare.net/VictorMorales34/deciphering-kubernetes-networking))
 
 ## Virtual Machines
 
