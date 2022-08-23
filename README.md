@@ -13,7 +13,7 @@ Kubernetes connects containers in different setups.
 - Cloud-Native MX ([slides](https://www.slideshare.net/VictorMorales34/pod-sandbox-workflow-creation-from-dockershim)|[video](https://youtu.be/Gi_IBnyiAgw?t=2613))
 - Comunidad DevOps + Cloud Native Costarica ([slides](https://www.slideshare.net/VictorMorales34/deep-dive-networking))
 - Kubernetes Community Days GT 2021 ([slides](https://www.slideshare.net/VictorMorales34/understanding-kube-proxy-in-ipvs-mode)|[video](https://youtu.be/fT94W7kvdx4))
-- OpenInfra Days Mexico 2022 ([slides](https://www.slideshare.net/VictorMorales34/deciphering-kubernetes-networking))
+- OpenInfra Days Mexico 2022 ([slides](https://www.slideshare.net/VictorMorales34/deciphering-kubernetes-networking)|[video](https://www.youtube.com/watch?v=OuuM0H_5_sI))
 
 ## Virtual Machines
 
@@ -29,7 +29,7 @@ are determine by the **PROVIDER** environment variable.
 Once Vagrant is installed, it's possible to provision a Virtual
 Machine using the following instructions:
 
-    vagrant up <pause|ipvs|flannel>
+    vagrant up <pause|ipvs|flannel|bash|ebpf>
 
 ## Linux interfaces for virtual networking
 
