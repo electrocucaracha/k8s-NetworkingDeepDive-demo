@@ -26,7 +26,9 @@ when /mswin|mingw|cygwin/
   mem = `wmic computersystem Get TotalPhysicalMemory`.split[1].to_i / 1024
 end
 
+# rubocop:disable Metrics/BlockLength
 Vagrant.configure('2') do |config|
+  # rubocop:enable Metrics/BlockLength
   config.vm.provider :libvirt
   config.vm.provider :virtualbox
 
@@ -42,16 +44,16 @@ Vagrant.configure('2') do |config|
 
   config.vm.provider 'virtualbox' do |v|
     v.gui = false
-    v.customize ["modifyvm", :id, "--nictype1", "virtio", "--cableconnected1", "on"]
+    v.customize ['modifyvm', :id, '--nictype1', 'virtio', '--cableconnected1', 'on']
     # https://bugs.launchpad.net/cloud-images/+bug/1829625/comments/2
-    v.customize ["modifyvm", :id, "--uart1", "0x3F8", "4"]
-    v.customize ["modifyvm", :id, "--uartmode1", "file", File::NULL]
+    v.customize ['modifyvm', :id, '--uart1', '0x3F8', '4']
+    v.customize ['modifyvm', :id, '--uartmode1', 'file', File::NULL]
     # Enable nested paging for memory management in hardware
-    v.customize ["modifyvm", :id, "--nestedpaging", "on"]
+    v.customize ['modifyvm', :id, '--nestedpaging', 'on']
     # Use large pages to reduce Translation Lookaside Buffers usage
-    v.customize ["modifyvm", :id, "--largepages", "on"]
+    v.customize ['modifyvm', :id, '--largepages', 'on']
     # Use virtual processor identifiers  to accelerate context switching
-    v.customize ["modifyvm", :id, "--vtxvpid", "on"]
+    v.customize ['modifyvm', :id, '--vtxvpid', 'on']
   end
 
   config.vm.provider :libvirt do |v|
@@ -70,11 +72,11 @@ Vagrant.configure('2') do |config|
 
   %w[pause ipvs flannel bash ebpf].each do |instance|
     config.vm.define instance do |demo|
-      [{ :host => './common', :guest => '/opt/common' },
-       { :host => instance.to_s, :guest => '/vagrant' }].each do |mapping|
-        demo.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}"
+      [{ host: './common', guest: '/opt/common' },
+       { host: instance.to_s, guest: '/vagrant' }].each do |mapping|
+        demo.vm.synced_folder (mapping[:host]).to_s, (mapping[:guest]).to_s
         demo.vm.provider :libvirt do |v, override|
-          override.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}", type: "virtiofs"
+          override.vm.synced_folder (mapping[:host]).to_s, (mapping[:guest]).to_s, type: 'virtiofs'
           v.memorybacking :access, mode: 'shared'
         end
       end
