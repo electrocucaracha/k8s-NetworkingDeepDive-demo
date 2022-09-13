@@ -94,7 +94,7 @@ brctl addbr cni0
 ip link set cni0 up
 ip addr add ${pod_cidr%.*}.1/24 dev cni0
 #NOTE: Fixing external access using NAT
-iptables -t nat -A POSTROUTING -s $pod_cidr ! -o cni0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s $pod_cidr ! -o cni0 -j MASQUERADE -w 1
 "
     sudo docker cp /tmp/10-bash-cni-plugin.conf "$node":/etc/cni/net.d/10-bash-cni-plugin.conf
     sudo docker exec "$node" bash -c "$cloud_init"
