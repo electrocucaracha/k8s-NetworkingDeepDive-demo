@@ -1,6 +1,7 @@
 # Kubernetes Networking deep dive Demo
 <!-- markdown-link-check-disable-next-line -->
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![visitors](https://visitor-badge.glitch.me/badge?page_id=electrocucaracha.k8s-NetworkingDeepDive-demo)
 
 ## Summary
 
@@ -9,9 +10,10 @@ Kubernetes connects containers in different setups.
 
 ### Presentations
 
-- [Cloud-Native MX](https://www.slideshare.net/VictorMorales34/pod-sandbox-workflow-creation-from-dockershim)
-- [Comunidad DevOps + Cloud Native Costarica](https://www.slideshare.net/VictorMorales34/deep-dive-networking)
-- [Kubernetes Community Days GT 2021](https://www.slideshare.net/VictorMorales34/understanding-kube-proxy-in-ipvs-mode)
+- Cloud-Native MX ([slides](https://www.slideshare.net/VictorMorales34/pod-sandbox-workflow-creation-from-dockershim)|[video](https://youtu.be/Gi_IBnyiAgw?t=2613))
+- Comunidad DevOps + Cloud Native Costarica ([slides](https://www.slideshare.net/VictorMorales34/deep-dive-networking))
+- Kubernetes Community Days GT 2021 ([slides](https://www.slideshare.net/VictorMorales34/understanding-kube-proxy-in-ipvs-mode)|[video](https://youtu.be/fT94W7kvdx4))
+- OpenInfra Days Mexico 2022 ([slides](https://www.slideshare.net/VictorMorales34/deciphering-kubernetes-networking)|[video](https://www.youtube.com/watch?v=OuuM0H_5_sI))
 
 ## Virtual Machines
 
@@ -27,7 +29,7 @@ are determine by the **PROVIDER** environment variable.
 Once Vagrant is installed, it's possible to provision a Virtual
 Machine using the following instructions:
 
-    vagrant up <pause|ipvs|flannel>
+    vagrant up <pause|ipvs|flannel|bash|ebpf>
 
 ## Linux interfaces for virtual networking
 
@@ -126,6 +128,13 @@ STP, VLAN filter, and multicast snooping.
 - You cannot bridge a Linux bridge directly by or with another Linux bridge (no
   Linux bridge cascading). You can neither connect a Linux bride to another
   Linux bridge via a "tap" device.
+
+## Contribution
+
+This is an open project, several individuals contribute in different forms like
+coding, documenting, testing, spreading the word at events within others.
+
+![Visualization of the codebase](./codebase-structure.svg)
 
 [1]: https://www.vagrantup.com/
 [2]: https://github.com/electrocucaracha/bootstrap-vagrant

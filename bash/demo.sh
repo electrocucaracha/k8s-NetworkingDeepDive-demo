@@ -22,6 +22,10 @@ kubectl wait --for=condition=Ready pod test
 
 info "Getting the IP address assigned to the Pod"
 kubectl exec test -- ip address show eth0
+
+info "Checking North-South Communication"
+kubectl exec test -- ping -c1 google.com
+
 for node in $(sudo docker ps --filter "name=k8s-*" --format "{{.Names}}"); do
     sudo docker exec "$node" cat /var/log/bash-cni-plugin.log
 done
