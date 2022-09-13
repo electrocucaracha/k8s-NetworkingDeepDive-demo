@@ -74,7 +74,8 @@ Vagrant.configure('2') do |config|
        { :host => instance.to_s, :guest => '/vagrant' }].each do |mapping|
         demo.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}"
         demo.vm.provider :libvirt do |v, override|
-          override.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}", type: "nfs"
+          override.vm.synced_folder "#{mapping[:host]}", "#{mapping[:guest]}", type: "virtiofs"
+          v.memorybacking :access, mode: 'shared'
         end
       end
       demo.vm.provision 'shell', privileged: false, inline: <<~SHELL
