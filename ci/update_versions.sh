@@ -44,7 +44,7 @@ function _get_latest_github_release {
 }
 
 function _get_latest_docker_tag {
-    curl -sfL "https://registry.hub.docker.com/v1/repositories/$1/tags" | python -c 'import json,sys,re;versions=[obj["name"] for obj in json.load(sys.stdin) if re.match("^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$",obj["name"])];print("\n".join(versions))' | uniq | sort -rn | head -n 1
+    curl -sfL "https://registry.hub.docker.com/v2/repositories/$1/tags?page_size=1024" | python -c 'import json,sys,re;versions=[obj["name"] for obj in json.load(sys.stdin)["results"] if re.match("^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$",obj["name"])];print("\n".join(versions))' | uniq | sort -rn | head -n 1
 }
 
 function _get_latest_go {
@@ -64,7 +64,7 @@ find . -type f -name 'kind-config*.yml' -exec sed -i "s|image: kindest/node:v.*|
 sed -i "s|FROM kindest/node:v.*|FROM kindest/node:v$kind_version|g" bash/Dockerfile
 
 # Update Busybox image version
-busybox_version="$(get_version docker_tag busybox)"
+busybox_version="$(get_version docker_tag library/busybox)"
 find . -type f -name '*.sh' -not -path ./ci/\* -exec sed -i "s/busybox:[0-9]*\\.[0-9]*\\.[0-9]*/busybox:$busybox_version/g" {} \;
 
 # Update umoci
