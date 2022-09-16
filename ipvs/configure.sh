@@ -46,18 +46,18 @@ function add_endpoint {
 
     sudo ipset add KUBE-LOOP-BACK "$ip_address,tcp:80,$ip_address"
     sudo ipvsadm --add-server --tcp-service "$SERVICE_ADDRESS" \
-    --real-server "${ip_address}:80" --masquerading
+        --real-server "${ip_address}:80" --masquerading
 }
 
 # create_sandbox() - Initializes a Pod
 function create_sandbox {
     local id="$1"
     pod_name="pod$id"
-    ip_address=${POD_SUBNET_PREFIX}$((id+1))
+    ip_address=${POD_SUBNET_PREFIX}$((id + 1))
     html="This is service #$id"
 
     # Starts Web server
-    netns_exec "$pod_name" nohup bash -c "(while true; do echo -e 'HTTP/1.1 200 OK\r\nContent-Length: ${#html}\r\nConnection: close\r\n\n${html}'| timeout 1 nc -N -lp 80 ; done) &" 1> /dev/null
+    netns_exec "$pod_name" nohup bash -c "(while true; do echo -e 'HTTP/1.1 200 OK\r\nContent-Length: ${#html}\r\nConnection: close\r\n\n${html}'| timeout 1 nc -N -lp 80 ; done) &" 1>/dev/null
 
     # Create veth pair and connect namespace with bridge
     sudo ip link add "veth$id" type veth peer name "veth${id}p"

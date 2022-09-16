@@ -20,9 +20,9 @@ if ! command -v curl; then
     # shellcheck disable=SC1091
     source /etc/os-release || source /usr/lib/os-release
     case ${ID,,} in
-        ubuntu|debian)
-            sudo apt-get update
-            sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 --no-install-recommends curl
+    ubuntu | debian)
+        sudo apt-get update
+        sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 --no-install-recommends curl
         ;;
     esac
 fi
@@ -57,7 +57,7 @@ if ! command -v cnitool; then
 fi
 
 # runc - CLI tool for spawning and running containers according to the OCI specification.
-if ! command -v runc  || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.1.3" ]; then
+if ! command -v runc || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.1.3" ]; then
     sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64
     sudo chmod +x /usr/bin/runc
 fi

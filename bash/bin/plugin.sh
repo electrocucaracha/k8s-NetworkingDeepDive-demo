@@ -12,7 +12,7 @@ set -o pipefail
 set -o errexit
 set -o nounset
 
-if [[ "${DEBUG:-false}" == "true" ]]; then
+if [[ ${DEBUG:-false} == "true" ]]; then
     set -o xtrace
 fi
 
@@ -22,7 +22,7 @@ rollback="echo 'Rolling back actions';"
 
 # debug() - This function prints an information message in the standard output
 function debug {
-    if [[ "${DEBUG:-false}" == "true" ]]; then
+    if [[ ${DEBUG:-false} == "true" ]]; then
         _print_msg "DEBUG" "$1"
     fi
 }
@@ -48,7 +48,7 @@ function allocate_ip {
     all_ips=$(_get_all_ip_list "$subnet")
     # shellcheck disable=SC2206
     all_ips=(${all_ips[@]})
-    if (( ${#all_ips[@]} == 0 )); then
+    if ((${#all_ips[@]} == 0)); then
         [ -f "$all_ips_file" ] && rm "$all_ips_file"
         error "The IP addresses list is empty"
     fi
@@ -56,8 +56,8 @@ function allocate_ip {
     reserved_ips=$(_get_reserved_ip_list "${all_ips[0]}" "${all_ips[1]}")
 
     for ip in "${all_ips[@]}"; do
-        if [[ "${reserved_ips[*]}" != *${ip}* ]]; then
-            echo "$ip" >> $reserved_ips_file
+        if [[ ${reserved_ips[*]} != *${ip}* ]]; then
+            echo "$ip" >>$reserved_ips_file
             output+="$ip\n"
             break
         fi
@@ -68,21 +68,21 @@ function allocate_ip {
 
 function _get_all_ip_list {
     if [ ! -f "$all_ips_file" ]; then
-        prips "$1" > "$all_ips_file"
+        prips "$1" >"$all_ips_file"
     fi
     cat "$all_ips_file"
 }
 
 function _get_reserved_ip_list {
-    reserved_ips=$(cat $reserved_ips_file 2> /dev/null || printf '%s\n' "$@" )
+    reserved_ips=$(cat $reserved_ips_file 2>/dev/null || printf '%s\n' "$@")
     # shellcheck disable=SC2206
     reserved_ips=(${reserved_ips[@]})
-    printf '%s\n' "${reserved_ips[@]}" | sort | uniq | tee  $reserved_ips_file
+    printf '%s\n' "${reserved_ips[@]}" | sort | uniq | tee $reserved_ips_file
 }
 
 function _get_rand_if_name {
     # shellcheck disable=SC2005
-    echo "$(tr -dc 'A-F0-9' < /dev/urandom  | head -c4)"
+    echo "$(tr -dc 'A-F0-9' </dev/urandom | head -c4)"
 }
 
 function _add_rollback {
@@ -103,7 +103,7 @@ function add {
     gw_ip=${output[0]}
     debug "gw_ip: $gw_ip"
     container_ip=${output[1]}
-    if [[ -z "$container_ip" ]]; then
+    if [[ -z $container_ip ]]; then
         [ -f "$reserved_ips_file" ] && rm "$reserved_ips_file"
         error "It couldn't discover an IP address for the container"
     fi
@@ -116,7 +116,7 @@ function add {
     tmp_if_name="tmp$if_name"
     echo ""
     # CNI_CONTAINERID: Container ID.
-    if ip link show type veth "$tmp_if_name" > /dev/null; then
+    if ip link show type veth "$tmp_if_name" >/dev/null; then
         error "The $CNI_CONTAINERID container is unable to use $tmp_if_name interface"
     fi
     debug "host_if_name: $host_if_name"
@@ -126,7 +126,7 @@ function add {
     info "Connecting $host_if_name to cni0"
     ip link set "$host_if_name" up
     ip link set "$host_if_name" master cni0
-    if [[ "${DEBUG:-false}" == "true" ]]; then
+    if [[ ${DEBUG:-false} == "true" ]]; then
         echo ""
         brctl show cni0
     fi
@@ -156,7 +156,7 @@ function add {
 }
 
 function del {
-    ip=$(ip netns exec "$CNI_CONTAINERID" ip addr show "$CNI_IFNAME" | awk '/inet / {print $2}' | sed  s%/.*%% || echo "")
+    ip=$(ip netns exec "$CNI_CONTAINERID" ip addr show "$CNI_IFNAME" | awk '/inet / {print $2}' | sed s%/.*%% || echo "")
     debug "ip: $ip"
     if [ -n "$ip" ]; then
         sed -i "/$ip/d" $reserved_ips_file
@@ -164,10 +164,10 @@ function del {
 }
 
 function main {
-    [[ "$CNI_ARGS" == *'K8S_POD_NAMESPACE=default;'* ]] && export DEBUG=true
+    [[ $CNI_ARGS == *'K8S_POD_NAMESPACE=default;'* ]] && export DEBUG=true
 
     exec 3>&1 # make stdout available as fd 3 for the result
-    exec &>> /var/log/bash-cni-plugin.log
+    exec &>>/var/log/bash-cni-plugin.log
 
     stdin=$(cat /dev/stdin)
     debug "stdin: $stdin"
@@ -175,25 +175,25 @@ function main {
     debug "CNI envs: $(printenv | grep CNI_)"
     # CNI_COMMAND: indicates the desired operation
     case $CNI_COMMAND in
-        ADD)
-            add
+    ADD)
+        add
         ;;
-        DEL)
-            del
+    DEL)
+        del
         ;;
-        GET)
-            error "GET not supported"
+    GET)
+        error "GET not supported"
         ;;
-        VERSION)
-            echo '{"cniVersion": "0.3.1","supportedVersions": [ "0.3.0", "0.3.1", "0.4.0" ]}' >&3
+    VERSION)
+        echo '{"cniVersion": "0.3.1","supportedVersions": [ "0.3.0", "0.3.1", "0.4.0" ]}' >&3
         ;;
-        *)
-            echo "Unknown cni command: $CNI_COMMAND"
-            exit 1
+    *)
+        echo "Unknown cni command: $CNI_COMMAND"
+        exit 1
         ;;
     esac
 }
 
-if [[ "${__name__:-"__main__"}" == "__main__" ]]; then
+if [[ ${__name__:-"__main__"} == "__main__" ]]; then
     main
 fi
