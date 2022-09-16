@@ -23,7 +23,7 @@ function _ping {
     info "Ping $service service"
     sudo -E perf trace -e "net:*" -o "$HOME/events.txt" ping -c 3 "$ip" | grep "time="
     sed -i 's|^.*ping/[0-9]* ||;s|skbaddr.*$||;s|napi_id.*$||' "$HOME/events.txt"
-    < "$HOME/events.txt" sort | uniq > "$HOME/events_$service.txt"
+    sort <"$HOME/events.txt" | uniq >"$HOME/events_$service.txt"
 }
 
 _ping original "$(hostname -I | awk '{ print $1}')"

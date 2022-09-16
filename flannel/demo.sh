@@ -17,7 +17,7 @@ set -o nounset
 source /opt/common/_utils.sh
 
 function _run_cmd {
-    if [[ "${K8S_FEATURE:-}" == "-ephemeral" ]]; then
+    if [[ ${K8S_FEATURE-} == "-ephemeral" ]]; then
         kubectl debug "nodes/${1}" -ti --image ubuntu:20.04 -- chroot /host/ "${@:2}"
     else
         sudo docker exec "$1" bash -c "${*:2}"
@@ -26,7 +26,7 @@ function _run_cmd {
 
 info "Cluster info:"
 kubectl get nodes -o custom-columns=name:.metadata.name,podCIDR:.spec.podCIDR,InternalIP:.status.addresses[0].address
-kubectl get pods -A  -o custom-columns=name:.metadata.name,podIP:.status.podIP,nodeName:.spec.nodeName
+kubectl get pods -A -o custom-columns=name:.metadata.name,podIP:.status.podIP,nodeName:.spec.nodeName
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do
     echo "=== $worker Worker node info ==="
     info "Flannel dynamic configuration"

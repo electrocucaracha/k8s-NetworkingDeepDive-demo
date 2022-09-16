@@ -19,7 +19,7 @@ source defaults.env
 # Creates the NETCONFPATH folder
 sudo mkdir -p "$NETCONFPATH"
 sudo chown -R "$USER:" "$NETCONFPATH"
-cat << EOF > "${NETCONFPATH}/00-mynet.conf"
+cat <<EOF >"${NETCONFPATH}/00-mynet.conf"
 {
     "cniVersion": "0.4.0",
     "name": "$CNI_NAME",

@@ -24,16 +24,16 @@ function print_stats {
 }
 
 function generate_traffic {
-    if [[ "${1:-false}" == "false" ]]; then
+    if [[ ${1:-false} == "false" ]]; then
         info "Generating HTTP traffic (Host to Service)"
     else
         info "Generating HTTP traffic (Namespace to Service)"
     fi
     for _ in {1..6}; do
-        if [[ "${1:-false}" == "false" ]]; then
+        if [[ ${1:-false} == "false" ]]; then
             curl -s "$SERVICE_ADDRESS"
         else
-            sudo ip netns exec pod1 curl -s --connect-timeout 1 "$SERVICE_ADDRESS" ||:
+            sudo ip netns exec pod1 curl -s --connect-timeout 1 "$SERVICE_ADDRESS" || :
         fi
         echo ""
     done
@@ -67,11 +67,11 @@ sudo ip link set cni0 promisc on
 # should be enabled if connections handled by IPVS are to be also handled by
 # stateful firewall rules. That is, iptables rules that make use of connection
 # tracking.
-sudo sysctl --write net.ipv4.vs.conntrack=1 > /dev/null
+sudo sysctl --write net.ipv4.vs.conntrack=1 >/dev/null
 generate_traffic true
 
 info "Increase pod1 weight"
-ip_addr=${POD_SUBNET_PREFIX}$((1+1))
+ip_addr=${POD_SUBNET_PREFIX}$((1 + 1))
 sudo ipvsadm --edit-server --tcp-service "$SERVICE_ADDRESS" --real-server "$ip_addr" --masquerading --weight 3
 
 # Weighted Round Robin - Assigns jobs to real servers proportionally to there real servers’ weight.
