@@ -23,6 +23,9 @@ kubectl wait --for=condition=Ready pod test
 info "Getting the IP address assigned to the Pod"
 kubectl exec test -- ip address show eth0
 
+info "Show IP routes"
+kubectl exec test -- ip route show
+
 info "Checking North-South Communication"
 kubectl exec test -- ping -c1 google.com
 
