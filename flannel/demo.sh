@@ -54,8 +54,9 @@ info "Traffic verification"
 kubectl logs --tail=2 pingclient
 peer_ifindex="$(kubectl exec pingclient -- ip link show eth0 | grep -o '@if.*:' | sed 's/@if//;s/://')"
 # shellcheck disable=SC2016
-# shellcheck disable=SC2086
-_run_cmd k8s-worker tcpdump -vv -c 2 -i '$(ip a | grep -o "'$peer_ifindex": veth.*@\" | awk '{print substr(\$2, 1, length(\$2)-1)}')" icmp
+nic='$(ip link show up type veth | grep -o -P "'$peer_ifindex": veth.*@\" | awk '{print substr(\$2, 1, length(\$2)-1)}')"
+_run_cmd k8s-worker tcpdump -v -c 2 -i "$nic" icmp
+_run_cmd k8s-worker tshark -V -c 2 -i "$nic" -Y icmp
 
 info "Workers status after Pods creation"
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do

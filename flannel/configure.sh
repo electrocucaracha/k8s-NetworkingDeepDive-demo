@@ -43,7 +43,7 @@ kubectl apply -f ./kube-flannel.yaml
 
 # Install Network tooling
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do
-    sudo docker exec "$worker" bash -c 'apt-get update && apt-get install -y --no-install-recommends bridge-utils tcpdump'
+    sudo docker exec "$worker" bash -c 'echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections; apt-get update && apt-get install -y --no-install-recommends bridge-utils tcpdump tshark'
 done
 
 # Wait for node readiness
