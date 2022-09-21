@@ -27,11 +27,11 @@ function cleanup {
     attempt_counter=0
     max_attempts=15
     until runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*stopped"; do
-        if [ ${attempt_counter} -eq ${max_attempts} ];then
+        if [ ${attempt_counter} -eq ${max_attempts} ]; then
             echo "Max attempts reached"
             return
         fi
-        attempt_counter=$((attempt_counter+1))
+        attempt_counter=$((attempt_counter + 1))
         sleep 1
     done
     if [ -f /tmp/recvtty.pid ]; then
@@ -57,19 +57,19 @@ fi
 if [ ! -d /tmp/images/busybox/ ] || [ -z "$(ls -A /tmp/images/busybox)" ]; then
     info "Pulling busybox image"
     mkdir -p /tmp/images
-    pushd /tmp/images > /dev/null
-    skopeo copy docker://busybox:1.35.0 oci:busybox:1.35.0 > /dev/null
-    popd > /dev/null
+    pushd /tmp/images >/dev/null
+    skopeo copy docker://busybox:1.35.0 oci:busybox:1.35.0 >/dev/null
+    popd >/dev/null
 fi
 
-pushd "$(mktemp -d)" > /dev/null
+pushd "$(mktemp -d)" >/dev/null
 cp -r /tmp/images/busybox .
 sudo umoci unpack --image busybox:1.35.0 bundle
 sudo chown -R "$USER:" bundle/
 
 # This script simulates the pause container
 # NOTE: Pause container - https://www.ianlewis.org/en/almighty-pause-container
-cat << EOF > bundle/rootfs/init.sh
+cat <<EOF >bundle/rootfs/init.sh
 #!/bin/sh
 
 trap "echo 'Shutting down, got signal'" EXIT
@@ -80,8 +80,8 @@ EOF
 
 # Creates a rootless OCI runtime config and include Network namespace creation.
 runc spec --rootless
-jq --argjson netType '{"type": "network" }' '.linux.namespaces += [$netType]' config.json > net_config.json
-jq '.process.args += ["init.sh"]' net_config.json > bundle/config.json
+jq --argjson netType '{"type": "network" }' '.linux.namespaces += [$netType]' config.json >net_config.json
+jq '.process.args += ["init.sh"]' net_config.json >bundle/config.json
 
 info "Network namespaces before container creation:"
 sudo ip netns
@@ -90,7 +90,7 @@ lsns --type net
 # Start container
 info "Starting the $CONTAINERID container..."
 runc --root "$HOME/.runc" run --detach --bundle bundle --console-socket /tmp/tty.sock "$CONTAINERID"
-popd > /dev/null
+popd >/dev/null
 
 info "Processes list:"
 ps -f -C runc -C sh
@@ -103,7 +103,7 @@ sudo ip netns
 
 # Assign container's net namespace
 sudo mkdir -p /var/run/netns
-sudo ln -sf "$(jq  -r '.namespace_paths.NEWNET' "$HOME/.runc/$CONTAINERID/state.json")" "$CNI_NETNS"
+sudo ln -sf "$(jq -r '.namespace_paths.NEWNET' "$HOME/.runc/$CONTAINERID/state.json")" "$CNI_NETNS"
 
 info "Network namespaces after allocation:"
 sudo ip netns

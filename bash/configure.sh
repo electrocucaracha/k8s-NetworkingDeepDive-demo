@@ -28,11 +28,11 @@ function _get_pod_cidr {
         if [ "$pod_cidr" ]; then
             echo "$pod_cidr"
             break
-        elif [ ${attempt_counter} -eq ${max_attempts} ];then
+        elif [ ${attempt_counter} -eq ${max_attempts} ]; then
             error "Max attempts reached"
         fi
-        attempt_counter=$((attempt_counter+1))
-        sleep $((attempt_counter*2))
+        attempt_counter=$((attempt_counter + 1))
+        sleep $((attempt_counter * 2))
     done
 }
 
@@ -58,7 +58,7 @@ fi
 
 trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
-    cat << EOF | sudo kind create cluster --name k8s --config=-
+    cat <<EOF | sudo kind create cluster --name k8s --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -80,7 +80,7 @@ fi
 
 for node in $(sudo docker ps --filter "name=k8s-*" --format "{{.Names}}"); do
     pod_cidr=$(_get_pod_cidr "$node")
-    cat << EOF > /tmp/10-bash-cni-plugin.conf
+    cat <<EOF >/tmp/10-bash-cni-plugin.conf
 {
   "cniVersion": "0.3.1",
   "name": "mynet",
@@ -94,7 +94,7 @@ brctl addbr cni0
 ip link set cni0 up
 ip addr add ${pod_cidr%.*}.1/24 dev cni0
 #NOTE: Fixing external access using NAT
-iptables -t nat -A POSTROUTING -s $pod_cidr ! -o cni0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s $pod_cidr ! -o cni0 -j MASQUERADE -w 1
 "
     sudo docker cp /tmp/10-bash-cni-plugin.conf "$node":/etc/cni/net.d/10-bash-cni-plugin.conf
     sudo docker exec "$node" bash -c "$cloud_init"

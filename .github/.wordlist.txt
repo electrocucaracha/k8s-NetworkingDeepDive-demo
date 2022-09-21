@@ -13,6 +13,7 @@ bbf
 bd
 bdf
 brd
+brightgreen
 busybox
 cacf
 cbb
@@ -149,6 +150,7 @@ rbng
 Reachability
 RemoteAddress
 ret
+rubocop
 RunPodSandbox
 runtime
 sdtout
