@@ -60,8 +60,7 @@ sed -i "s|PKG_FLANNEL_VERSION:-.*|PKG_FLANNEL_VERSION:-$PKG_FLANNEL_VERSION}|g" 
 
 # Update KinD node image version
 kind_version="$(get_version docker_tag kindest/node)"
-find . -type f -name 'kind-config*.yml' -exec sed -i "s|image: kindest/node:v.*|image: kindest/node:v$kind_version|g" {} \;
-sed -i "s|FROM kindest/node:v.*|FROM kindest/node:v$kind_version|g" bash/Dockerfile
+find . -type f -name Dockerfile -exec sed -i "s|FROM kindest/node:v.*|FROM kindest/node:v$kind_version|g" {} \;
 
 # Update Busybox image version
 busybox_version="$(get_version docker_tag library/busybox)"

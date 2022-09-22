@@ -29,10 +29,42 @@ function get_status {
     kubectl describe nodes
 }
 
+if [ -z "$(sudo docker images kindest/node:flannel -q)" ]; then
+    sudo docker build --tag kindest/node:flannel --no-cache .
+fi
+
 trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
+    cat <<EOF | sudo kind create cluster --name k8s --config=-
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+featureGates:
+  EphemeralContainers: ${K8S_ENABLE_EPHEMERAL_CONTAINERS:-false}
+networking:
+  kubeProxyMode: "ipvs"
+  disableDefaultCNI: true
+nodes:
+  - role: control-plane
+    image: kindest/node:flannel
+    extraMounts:
+      - hostPath: /opt/containernetworking/plugins
+        containerPath: /opt/cni/bin
+  - role: worker
+    image: kindest/node:flannel
+    extraMounts:
+      - hostPath: /opt/containernetworking/plugins
+        containerPath: /opt/cni/bin
+  - role: worker
+    image: kindest/node:flannel
+    extraMounts:
+      - hostPath: /opt/containernetworking/plugins
+        containerPath: /opt/cni/bin
+EOF
+    mkdir -p "$HOME/.kube"
+    sudo cp /root/.kube/config "$HOME/.kube/config"
+    sudo chown -R "$USER" "$HOME/.kube/"
+    chmod 600 "$HOME/.kube/config"
     newgrp docker <<EONG
-    kind create cluster --name k8s --config=./kind-config${K8S_FEATURE-}.yml
     for img in quay.io/coreos/flannel:v0.14.0 ubuntu:20.04 busybox:1.35.0; do
         docker pull \$img
         kind load docker-image \$img --name k8s
@@ -40,11 +72,6 @@ if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
 EONG
 fi
 kubectl apply -f ./kube-flannel.yaml
-
-# Install Network tooling
-for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do
-    sudo docker exec "$worker" bash -c 'echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections; apt-get update && apt-get install -y --no-install-recommends bridge-utils tcpdump tshark'
-done
 
 # Wait for node readiness
 for node in $(kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); do

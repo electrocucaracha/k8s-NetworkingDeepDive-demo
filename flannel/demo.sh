@@ -17,7 +17,7 @@ set -o nounset
 source /opt/common/_utils.sh
 
 function _run_cmd {
-    if [[ ${K8S_FEATURE-} == "-ephemeral" ]]; then
+    if [[ ${K8S_ENABLE_EPHEMERAL_CONTAINERS:-false} == "true" ]]; then
         kubectl debug "nodes/${1}" -ti --image ubuntu:20.04 -- chroot /host/ "${@:2}"
     else
         sudo docker exec "$1" bash -c "${*:2}"
