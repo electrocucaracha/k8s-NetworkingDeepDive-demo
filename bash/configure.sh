@@ -93,6 +93,9 @@ EOF
 brctl addbr cni0
 ip link set cni0 up
 ip addr add ${pod_cidr%.*}.1/24 dev cni0
+#NOTE: Fixing container-to-container communication
+iptables -t filter -A FORWARD -s $network_id -j ACCEPT -w 1
+iptables -t filter -A FORWARD -d $network_id -j ACCEPT -w 1
 #NOTE: Fixing external access using NAT
 iptables -t nat -A POSTROUTING -s $pod_cidr ! -o cni0 -j MASQUERADE -w 1
 "
