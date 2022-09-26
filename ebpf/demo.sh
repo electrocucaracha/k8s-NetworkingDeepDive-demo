@@ -38,3 +38,6 @@ sudo docker logs bypass
 
 info "Trace events difference"
 comm -3 ~/events_original.txt ~/events_bypass.txt
+
+info "Show bypass ingress traffic controls"
+sudo docker exec bypass bash -c '/usr/sbin/tc filter show dev eth0 ingress'
