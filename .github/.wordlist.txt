@@ -180,7 +180,7 @@ segs
 skb
 sl
 slideshare
-src
+Src
 srcport
 stdin
 STIME
@@ -206,7 +206,7 @@ VETH
 vethc
 vethCEE
 vethdd
-vethe
+vethE
 VictorMorales
 VirtualBox
 virtualized
