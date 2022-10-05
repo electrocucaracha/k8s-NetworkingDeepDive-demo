@@ -38,8 +38,6 @@ if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
     cat <<EOF | sudo kind create cluster --name k8s --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-featureGates:
-  EphemeralContainers: ${K8S_ENABLE_EPHEMERAL_CONTAINERS:-false}
 networking:
   kubeProxyMode: "ipvs"
   disableDefaultCNI: true
