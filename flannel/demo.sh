@@ -16,9 +16,12 @@ set -o nounset
 # shellcheck disable=SC1091
 source /opt/common/_utils.sh
 
+node_img=ubuntu:22.04
+demo_img=busybox:1.35.0
+
 function _run_cmd {
     if [[ ${K8S_ENABLE_EPHEMERAL_CONTAINERS:-false} == "true" ]]; then
-        kubectl debug "nodes/${1}" -ti --image ubuntu:20.04 -- chroot /host/ "${@:2}"
+        kubectl debug "nodes/${1}" -ti --image "$node_img" -- chroot /host/ "${@:2}"
     else
         sudo docker exec "$1" bash -c "${*:2}"
     fi
@@ -43,11 +46,11 @@ for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"
 done
 
 info "Pods creation"
-kubectl run pinghost --image=busybox:1.35.0 --overrides='{"spec": {"nodeName": "k8s-worker2"}}' -- sleep infinity >/dev/null
+kubectl run pinghost --image="$demo_img" --overrides='{"spec": {"nodeName": "k8s-worker2"}}' -- sleep infinity >/dev/null
 trap 'kubectl delete pods --all >/dev/null' EXIT
 kubectl wait --for=condition=ready pods pinghost --timeout=3m >/dev/null
 pinghost_ip="$(kubectl get pod pinghost -o jsonpath='{.status.podIP}')"
-kubectl run pingclient --image=busybox:1.35.0 --overrides='{"spec": {"nodeName": "k8s-worker"}}' -- ping "$pinghost_ip" >/dev/null
+kubectl run pingclient --image="$demo_img" --overrides='{"spec": {"nodeName": "k8s-worker"}}' -- ping "$pinghost_ip" >/dev/null
 kubectl wait --for=condition=ready pods pingclient --timeout=3m >/dev/null
 
 info "Traffic verification"

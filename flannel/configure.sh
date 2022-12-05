@@ -62,10 +62,12 @@ EOF
     sudo cp /root/.kube/config "$HOME/.kube/config"
     sudo chown -R "$USER" "$HOME/.kube/"
     chmod 600 "$HOME/.kube/config"
-    newgrp docker <<EONG
-    for img in quay.io/coreos/flannel:v0.14.0 ubuntu:20.04 busybox:1.35.0; do
-        docker pull \$img
-        kind load docker-image \$img --name k8s
+    newgrp docker <<"EONG"
+    flannel_imgs=$(grep " image:" kube-flannel.yaml | awk '{print $2}' | sort | uniq)
+    demo_imgs=$(grep "^.*_img=" demo.sh | awk -F '=' '{ print $2}')
+    for img in $flannel_imgs $demo_imgs; do
+        docker pull $img
+        kind load docker-image $img --name k8s
     done
 EONG
 fi
