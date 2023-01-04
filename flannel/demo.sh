@@ -17,7 +17,7 @@ set -o nounset
 source /opt/common/_utils.sh
 
 node_img=ubuntu:22.04
-demo_img=busybox:1.35.0
+demo_img=busybox:1.36.0
 
 function _run_cmd {
     if [[ ${K8S_ENABLE_EPHEMERAL_CONTAINERS:-false} == "true" ]]; then
