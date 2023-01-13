@@ -33,9 +33,9 @@ jobs:
       ) ||
       github.event_name != 'pull_request_review'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: Run the sh-checker
-        uses: luizm/action-sh-checker@master
+        uses: luizm/action-sh-checker@v0.5.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SHFMT_OPTS: -i 4 -s
@@ -51,14 +51,10 @@ jobs:
       ) ||
       github.event_name != 'pull_request_review'
     outputs:
-      pause: ${{ steps.filter.outputs.pause }}
-      ipvs: ${{ steps.filter.outputs.ipvs }}
-      flannel: ${{ steps.filter.outputs.flannel }}
-      bash: ${{ steps.filter.outputs.bash }}
-      ebpf: ${{ steps.filter.outputs.ebpf }}
+      demos: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
+      - uses: actions/checkout@v3.3.0
+      - uses: dorny/paths-filter@v2.11.1
         if: ${{ !env.ACT }}
         id: filter
         with:
@@ -74,67 +70,30 @@ jobs:
               - 'bash/*'
             ebpf:
               - 'ebpf/*'
-  check-pause-demo:
-    name: Check Pause demo on Ubuntu Virtual Environment
+  check-demo:
+    name: Check demo on Ubuntu Virtual Environment
     runs-on: ubuntu-20.04
     needs: changes
-    if: needs.changes.outputs.pause == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        demo: ${{ fromJSON(needs.changes.outputs.demos) }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@v3.3.0
+      - uses: actions/setup-go@v3.5.0
         with:
           go-version: '1.18'
           check-latest: true
       - uses: ./.github/actions/check-demo
         with:
-          demo-type: pause
-  check-ipvs-demo:
-    name: Check IPVS demo on Ubuntu Virtual Environment
-    runs-on: ubuntu-20.04
-    needs: changes
-    if: needs.changes.outputs.ipvs == 'true'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/check-demo
-        with:
-          demo-type: ipvs
-  check-flannel-demo:
-    name: Check Flannel demo on Ubuntu Virtual Environment
-    runs-on: ubuntu-20.04
-    needs: changes
-    if: needs.changes.outputs.flannel == 'true'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/check-demo
-        with:
-          demo-type: flannel
-  check-bash-demo:
-    name: Check Bash demo on Ubuntu Virtual Environment
-    runs-on: ubuntu-20.04
-    needs: changes
-    if: needs.changes.outputs.bash == 'true'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/check-demo
-        with:
-          demo-type: bash
+          demo-type: ${{ matrix.demo }}
   check-bash-shellspec:
     name: Run BDD shell specs for Bash demo
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: Install ShellSpec
         run: curl -fsSL https://github.com/shellspec/shellspec/releases/latest/download/shellspec-dist.tar.gz | tar -xz -C ..
       - name: Run Shellspec
         shell: 'script -q -e -c "bash {0}"'
         run: ../shellspec/shellspec --profile --xtrace
-  check-ebpf-demo:
-    name: Check eBPF demo on Ubuntu Virtual Environment
-    runs-on: ubuntu-20.04
-    needs: changes
-    if: needs.changes.outputs.ebpf == 'true'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/check-demo
-        with:
-          demo-type: ebpf

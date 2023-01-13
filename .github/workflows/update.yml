@@ -15,12 +15,16 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write  # for technote-space/create-pr-action to push code
+  pull-requests: write  # for technote-space/create-pr-action to create a PR
+
 jobs:
   check-versions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: technote-space/create-pr-action@v2
+      - uses: actions/checkout@v3.3.0
+      - uses: technote-space/create-pr-action@v2.1.4
         with:
           EXECUTE_COMMANDS: |
             ./ci/update_versions.sh
@@ -31,8 +35,8 @@ jobs:
   check-dictionary:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: technote-space/create-pr-action@v2
+      - uses: actions/checkout@v3.3.0
+      - uses: technote-space/create-pr-action@v2.1.4
         with:
           EXECUTE_COMMANDS: |
             sudo apt-get update
