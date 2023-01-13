@@ -77,3 +77,5 @@ kubectl apply -f ./kube-flannel.yaml
 for node in $(kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); do
     kubectl wait --for=condition=ready "node/$node" --timeout=3m
 done
+# Wait for flannel service
+kubectl rollout status daemonset.apps/kube-flannel-ds -n kube-flannel --timeout=3m
