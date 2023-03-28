@@ -32,6 +32,7 @@ Conns
 CONTAINERID
 coredns
 Costarica
+csi
 dbe
 dbec
 dev
@@ -96,6 +97,7 @@ initVagrant
 InPkts
 integrations
 InternalIP
+IPC
 IPMASQ
 ips
 iptable
@@ -115,6 +117,7 @@ lft
 Libvirt
 lladdr
 LocalAddress
+localhost
 LOOPBACK
 LXC
 ly
