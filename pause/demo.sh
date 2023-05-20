@@ -58,13 +58,13 @@ if [ ! -d /tmp/images/busybox/ ] || [ -z "$(ls -A /tmp/images/busybox)" ]; then
     info "Pulling busybox image"
     mkdir -p /tmp/images
     pushd /tmp/images >/dev/null
-    skopeo copy docker://busybox:1.36.0 oci:busybox:1.36.0 >/dev/null
+    skopeo copy docker://busybox:1.36.1 oci:busybox:1.36.1 >/dev/null
     popd >/dev/null
 fi
 
 pushd "$(mktemp -d)" >/dev/null
 cp -r /tmp/images/busybox .
-sudo umoci unpack --image busybox:1.36.0 bundle
+sudo umoci unpack --image busybox:1.36.1 bundle
 sudo chown -R "$USER:" bundle/
 
 # This script simulates the pause container
