@@ -16,7 +16,7 @@ set -o nounset
 # shellcheck disable=SC1091
 source /opt/common/_utils.sh
 
-kubectl run test --image=busybox:1.36.0 -- sleep infinity
+kubectl run test --image=busybox:1.36.1 -- sleep infinity
 trap 'kubectl delete pod test' EXIT
 kubectl wait --for=condition=Ready pod test
 
