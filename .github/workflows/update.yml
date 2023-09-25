@@ -23,7 +23,7 @@ jobs:
   check-versions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
       - uses: technote-space/create-pr-action@v2.1.4
         with:
           EXECUTE_COMMANDS: |
@@ -35,7 +35,7 @@ jobs:
   check-dictionary:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
       - uses: technote-space/create-pr-action@v2.1.4
         with:
           EXECUTE_COMMANDS: |
