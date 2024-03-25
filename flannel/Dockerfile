@@ -1,4 +1,4 @@
-FROM kindest/node:v1.29.1
+FROM kindest/node:v1.29.2
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections && \
