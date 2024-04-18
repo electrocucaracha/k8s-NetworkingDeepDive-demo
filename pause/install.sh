@@ -52,7 +52,7 @@ fi
 
 # cnitool - Executes a CNI configuration
 if ! command -v cnitool; then
-    go install github.com/containernetworking/cni/cnitool@v1.1.2
+    go install github.com/containernetworking/cni/cnitool@v1.2.0
     sudo mv ~/go/bin/cnitool /usr/bin/
 fi
 
