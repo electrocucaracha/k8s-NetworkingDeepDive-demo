@@ -45,11 +45,60 @@ into a single logical "bonded" interface. The behavior of the bonded interface
 depends on the mode; generally speaking, modes provide either hot standby or
 load balancing services.
 
+```text
++-----------------------------+
+|            Server           |
+|                             |
+|      +--------------+       |
+|      |     bond0    |       |
+|      +-------+------+       |
+|              |              |
+|      +-------+------+       |
+|      |              |       |
+|   +--+---+       +--+---+   |
+|   | eth0 |       | eth1 |   |
++---+--+---+-------+--+---+---+
+       |              |
++======+==============+=======+
+|            switch           |
++=============================+
+```
+
+```bash
+ip link add bond1 type bond miimon 100 mode active-backup
+ip link set eth0 master bond1
+ip link set eth1 master bond1
+```
+
 ### VLAN
 
 A VLAN, aka virtual LAN, separates broadcast domains by adding tags to network
 packets. VLANs allow network administrators to group hosts under the same switch
 or between different switches.
+
+```text
++---------------------------------+
+|             Server              |
+|                                 |
+|   +--------+       +--------+   |
+|   | eth0.1 |       | eth0.2 |   |
+|   +----+---+       +----+---+   |
+|        |                |       |
+|        +-------+--------+       |
+|                |                |
+|             +--+---+            |
+|             | eth0 |            |
++-------------+--+---+------------+
+                 |
++================+================+
+|              switch             |
++=================================+
+```
+
+```bash
+ip link add link eth0 name eth0.1 type vlan id 1
+ip link add link eth0 name eth0.2 type vlan id 2
+```
 
 ### VXLAN
 
@@ -57,15 +106,44 @@ VXLAN (Virtual eXtensible Local Area Network) is a tunneling protocol designed
 to solve the problem of limited VLAN IDs (4,096) in IEEE 802.1q. It is described
 by IETF RFC 7348.
 
+```text
++------------+        +------------+
+|   Server   |        |   Server   |
+|            |        |            |
+|   +-----+  |        |   +-----+  |
+|   | vx0 |  |        |   | vx0 |  |
+|   +--+--+  |        |   +--+--+  |
+|      |     |        |      |     |
+|   +--+---+ |        |   +--+---+ |
+|   | eth0 | |        |   | eth0 | |
++---+--+---+-+        +---+--+---+-+
+       |                     |
++======+=====+        +======+=====+
+|   switch   +--------+   switch   |
++============+        +============+
+```
+
+```bash
+ip link add vx0 type vxlan id 100 local 1.1.1.1 remote 2.2.2.2 dev eth0 dstport 4789
+```
+
 ### MACVLAN
 
 With MACVLAN, you can create multiple interfaces with different Layer 2 (that
 is, Ethernet MAC) addresses on top of a single one.
 
+```bash
+ip link add macvlan1 link eth0 type macvlan mode bridge
+```
+
 ### IPVLAN
 
 IPVLAN is similar to MACVLAN with the difference being that the endpoints have
 the same MAC address.
+
+```bash
+ip link add ipvl0 link eth0 type ipvlan mode l2
+```
 
 ### VETH
 
@@ -76,11 +154,19 @@ pair is down. These 2 devices can be imagined as being connected by a network
 cable; each veth-device of a pair can be attached to different virtual entities
 as OpenVswitch bridges, LXC containers or Linux standard bridges.
 
+```bash
+ip link add veth0 type veth peer name veth1
+```
+
 ### Dummy
 
 A dummy interface is entirely virtual like, for example, the loopback interface.
 The purpose of a dummy interface is to provide a device to route packets through
 without actually transmitting them.
+
+```bash
+ip link add dummy1 type dummy
+```
 
 ### TUN
 
@@ -104,6 +190,39 @@ A bridge behaves like a network switch. It forwards packets between interfaces
 that are connected to it. It's usually used for forwarding packets on routers,
 on gateways, or between VMs and network namespaces on a host. It also supports
 STP, VLAN filter, and multicast snooping.
+
+```text
++-----------------------------------+
+|              Server               |
+|                                   |
+|   +----------+    +-----------+   |
+|   |    VM1   |    |  netns1   |   |
+|   |          |    |           |   |
+|   | +------+ |    | +-------+ |   |
+|   | | eth0 | |    | | veth0 | |   |
+|   +-+------+-+    +-+-------+-+   |
+|     | tap1 |        | veth1 |     |
+|     +---+--+        +---+---+     |
+|         |               |         |
+|   +-----+---------------+-----+   |
+|   |           br0             |   |
+|   +------------+--------------+   |
+|                |                  |
+|             +--+---+              |
+|             | eth0 |              |
++-------------+--+---+--------------+
+                 |
++================+==================+
+|              switch               |
++===================================+
+```
+
+```bash
+ip link add br0 type bridge
+ip link set eth0 master br0
+ip link set tap1 master br0
+ip link set veth1 master br0
+```
 
 #### Aspects and properties
 
