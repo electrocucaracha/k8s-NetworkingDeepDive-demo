@@ -16,10 +16,11 @@ lint:
 	-e VALIDATE_KUBERNETES_KUBEVAL=false \
 	-e VALIDATE_CPP=false \
 	-e LINTER_RULES_PATH=/ \
+	-e EDITORCONFIG_FILE_NAME=.editorconfig \
 	github/super-linter
 	tox -e lint
 
 .PHONY: fmt
 fmt:
-	sudo -E $(DOCKER_CMD) run --rm -u "$$(id -u):$$(id -g)" \
-	-v "$$(pwd):/mnt" -w /mnt mvdan/shfmt -l -w -i 4 -s .
+	command -v shfmt > /dev/null || curl -s "https://i.jpillora.com/mvdan/sh!!?as=shfmt" | bash
+	shfmt -l -w -s .
