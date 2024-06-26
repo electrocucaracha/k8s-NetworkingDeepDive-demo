@@ -19,15 +19,15 @@ jobs:
   check-broken-links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # refs/tags/v4.1.7
       - name: Check broken links
-        uses: gaurav-nelson/github-action-markdown-link-check@1.0.15
+        uses: gaurav-nelson/github-action-markdown-link-check@499c1e7f3637c131334fa8e937c45144f79d72d2 # refs/tags/v1
   check-super-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # refs/tags/v4.1.7
       - name: Check super-linter
-        uses: github/super-linter@v5.0.0
+        uses: github/super-linter@4e51915f4a812abf59fed160bb14595c0a38a9e7 # refs/tags/v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
@@ -36,7 +36,7 @@ jobs:
   check-tox:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # refs/tags/v4.1.7
       - name: Install tox
         run: pip install tox
       - name: Run tox validation
