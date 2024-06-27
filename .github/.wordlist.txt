@@ -103,6 +103,7 @@ ips
 iptable
 iptables
 IPv
+ipvl
 IPVLAN
 IPVS
 jited
@@ -126,6 +127,7 @@ MACVLAN
 markdownlint
 Masq
 maxmtu
+miimon
 minmtu
 MTU
 MULTICAST
@@ -217,11 +219,13 @@ virtualized
 vis
 VLAN
 VLANs
+VM
 VMs
 VNI
 vpwb
 VTEP
 VtepMAC
+vx
 VXLAN
 WoPVZrW
 wrr
