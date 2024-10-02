@@ -20,7 +20,7 @@ node_img=ubuntu:22.04
 demo_img=busybox:1.36.1
 
 function _run_cmd {
-    if [[ ${K8S_ENABLE_EPHEMERAL_CONTAINERS:-false} == "true" ]]; then
+    if kubectl auth can-i debug '*' -A >/dev/null && [ "${K8S_ENABLE_EPHEMERAL_CONTAINERS:-true}" == "true" ]; then
         kubectl debug "nodes/${1}" -ti --image "$node_img" -- chroot /host/ "${@:2}"
     else
         sudo docker exec "$1" bash -c "${*:2}"
@@ -58,8 +58,8 @@ kubectl logs --tail=2 pingclient
 peer_ifindex="$(kubectl exec pingclient -- ip link show eth0 | grep -o '@if.*:' | sed 's/@if//;s/://')"
 # shellcheck disable=SC2016
 nic='$(ip link show up type veth | grep -o -P "'$peer_ifindex": veth.*@\" | awk '{print substr(\$2, 1, length(\$2)-1)}')"
-_run_cmd k8s-worker tcpdump -v -c 2 -i "$nic" icmp
-_run_cmd k8s-worker tshark -V -c 2 -i "$nic" -Y icmp
+K8S_ENABLE_EPHEMERAL_CONTAINERS=false _run_cmd k8s-worker tcpdump -v -c 2 -i "$nic" icmp
+K8S_ENABLE_EPHEMERAL_CONTAINERS=false _run_cmd k8s-worker tshark -V -c 2 -i "$nic" -Y icmp
 
 info "Workers status after Pods creation"
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do
@@ -85,7 +85,7 @@ _run_cmd k8s-worker brctl showmacs cni0
 info "ARP cache entries to pinghost pod"
 # shellcheck disable=SC2016
 # shellcheck disable=SC2086
-_run_cmd k8s-worker ip neigh show '$(ip route get '$pinghost_ip" | awk 'NR==1{print \$3}')"
+_run_cmd k8s-worker ip neigh show '$(ip route get '$pinghost_ip" | grep flannel.1 | awk '{print \$3}')"
 info "Forwarding Database entries of flannel.1"
 _run_cmd k8s-worker bridge fdb show brport flannel.1
 
