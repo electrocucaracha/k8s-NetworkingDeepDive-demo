@@ -29,6 +29,7 @@ The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
 <!-- markdownlint-disable MD010 -->
+
 ```bash
 
 21:55:17 - INFO: Cluster info:
@@ -64,12 +65,12 @@ Creating debugging pod node-debugger-k8s-worker-dxlt7 with container debugger on
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-2: kube-ipvs0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default 
+2: kube-ipvs0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
     inet 10.96.0.10/32 scope global kube-ipvs0
        valid_lft forever preferred_lft forever
     inet 10.96.0.1/32 scope global kube-ipvs0
        valid_lft forever preferred_lft forever
-3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default 
+3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default
     inet 10.244.2.0/32 scope global flannel.1
        valid_lft forever preferred_lft forever
 12: eth0@if13: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0
@@ -78,22 +79,22 @@ Creating debugging pod node-debugger-k8s-worker-dxlt7 with container debugger on
 
 21:55:22 - INFO: VXLAN network devices
 Creating debugging pod node-debugger-k8s-worker-58vmx with container debugger on node k8s-worker.
-3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default 
-    link/ether a6:c0:b3:5f:86:71 brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 68 maxmtu 65535 
-    vxlan id 1 local 172.80.0.4 dev eth0 srcport 0 0 dstport 8472 nolearning ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default
+    link/ether a6:c0:b3:5f:86:71 brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 68 maxmtu 65535
+    vxlan id 1 local 172.80.0.4 dev eth0 srcport 0 0 dstport 8472 nolearning ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
 
 21:55:24 - INFO: Network routes
 Creating debugging pod node-debugger-k8s-worker-sdbd7 with container debugger on node k8s-worker.
-default via 172.80.0.1 dev eth0 
-10.244.0.0/24 via 10.244.0.0 dev flannel.1 onlink 
-10.244.1.0/24 via 10.244.1.0 dev flannel.1 onlink 
-172.80.0.0/24 dev eth0 proto kernel scope link src 172.80.0.4 
+default via 172.80.0.1 dev eth0
+10.244.0.0/24 via 10.244.0.0 dev flannel.1 onlink
+10.244.1.0/24 via 10.244.1.0 dev flannel.1 onlink
+172.80.0.0/24 dev eth0 proto kernel scope link src 172.80.0.4
 
 21:55:25 - INFO: ARP cache entries
 Creating debugging pod node-debugger-k8s-worker-js45w with container debugger on node k8s-worker.
-10.244.0.0 dev flannel.1 lladdr e6:7d:c5:e2:80:1a PERMANENT 
-10.244.1.0 dev flannel.1 lladdr 3a:bb:55:60:be:4e PERMANENT 
-172.80.0.2 dev eth0 lladdr 02:42:ac:50:00:02 REACHABLE 
+10.244.0.0 dev flannel.1 lladdr e6:7d:c5:e2:80:1a PERMANENT
+10.244.1.0 dev flannel.1 lladdr 3a:bb:55:60:be:4e PERMANENT
+172.80.0.2 dev eth0 lladdr 02:42:ac:50:00:02 REACHABLE
 === k8s-worker2 Worker node info ===
 
 21:55:26 - INFO: Flannel dynamic configuration
@@ -108,12 +109,12 @@ Creating debugging pod node-debugger-k8s-worker2-gnwvw with container debugger o
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
-2: kube-ipvs0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default 
+2: kube-ipvs0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
     inet 10.96.0.10/32 scope global kube-ipvs0
        valid_lft forever preferred_lft forever
     inet 10.96.0.1/32 scope global kube-ipvs0
        valid_lft forever preferred_lft forever
-3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default 
+3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN group default
     inet 10.244.1.0/32 scope global flannel.1
        valid_lft forever preferred_lft forever
 10: eth0@if11: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0
@@ -122,22 +123,22 @@ Creating debugging pod node-debugger-k8s-worker2-gnwvw with container debugger o
 
 21:55:28 - INFO: VXLAN network devices
 Creating debugging pod node-debugger-k8s-worker2-fkzfn with container debugger on node k8s-worker2.
-3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default 
-    link/ether 3a:bb:55:60:be:4e brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 68 maxmtu 65535 
-    vxlan id 1 local 172.80.0.3 dev eth0 srcport 0 0 dstport 8472 nolearning ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default
+    link/ether 3a:bb:55:60:be:4e brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 68 maxmtu 65535
+    vxlan id 1 local 172.80.0.3 dev eth0 srcport 0 0 dstport 8472 nolearning ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
 
 21:55:29 - INFO: Network routes
 Creating debugging pod node-debugger-k8s-worker2-hhbrn with container debugger on node k8s-worker2.
-default via 172.80.0.1 dev eth0 
-10.244.0.0/24 via 10.244.0.0 dev flannel.1 onlink 
-10.244.2.0/24 via 10.244.2.0 dev flannel.1 onlink 
-172.80.0.0/24 dev eth0 proto kernel scope link src 172.80.0.3 
+default via 172.80.0.1 dev eth0
+10.244.0.0/24 via 10.244.0.0 dev flannel.1 onlink
+10.244.2.0/24 via 10.244.2.0 dev flannel.1 onlink
+172.80.0.0/24 dev eth0 proto kernel scope link src 172.80.0.3
 
 21:55:31 - INFO: ARP cache entries
 Creating debugging pod node-debugger-k8s-worker2-l2hw2 with container debugger on node k8s-worker2.
-10.244.0.0 dev flannel.1 lladdr e6:7d:c5:e2:80:1a PERMANENT 
-10.244.2.0 dev flannel.1 lladdr a6:c0:b3:5f:86:71 PERMANENT 
-172.80.0.2 dev eth0 lladdr 02:42:ac:50:00:02 REACHABLE 
+10.244.0.0 dev flannel.1 lladdr e6:7d:c5:e2:80:1a PERMANENT
+10.244.2.0 dev flannel.1 lladdr a6:c0:b3:5f:86:71 PERMANENT
+172.80.0.2 dev eth0 lladdr 02:42:ac:50:00:02 REACHABLE
 
 21:55:32 - INFO: Pods creation
 
@@ -220,13 +221,13 @@ Internet Control Message Protocol
 Creating debugging pod node-debugger-k8s-worker-tz2vq with container debugger on node k8s-worker.
 10.244.2.5
 21:55:39 - INFO: Virtual Ethernet network devices connected to cni0
-5: veth93549b9a@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default 
+5: veth93549b9a@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default
     link/ether ee:cc:31:1a:74:ec brd ff:ff:ff:ff:ff:ff link-netns cni-39f9a178-7d01-7d05-3b67-7b515576e286
-6: vethc6e69f5f@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default 
+6: vethc6e69f5f@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default
     link/ether d2:92:0c:92:e7:42 brd ff:ff:ff:ff:ff:ff link-netns cni-4f5e1acc-c367-eaad-a9e2-2a92125c65d1
-7: veth48601bbf@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default 
+7: veth48601bbf@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default
     link/ether ee:cd:3f:72:20:08 brd ff:ff:ff:ff:ff:ff link-netns cni-492be435-a2d4-cda3-767e-dcd017c590ec
-8: veth89403509@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default 
+8: veth89403509@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default
     link/ether 06:84:28:90:90:01 brd ff:ff:ff:ff:ff:ff link-netns cni-acb2e9e1-b3d5-793e-61d0-9defb052255a
 
 21:55:40 - INFO: Bridge network devices
@@ -238,14 +239,14 @@ cni0		8000.a6ba4b37267e	no		veth48601bbf
 							vethc6e69f5f
 
 21:55:42 - INFO: cni0 network routes
-10.244.2.0/24 dev cni0 proto kernel scope link src 10.244.2.1 
+10.244.2.0/24 dev cni0 proto kernel scope link src 10.244.2.1
 === k8s-worker2 Worker node info ===
 
 21:55:44 - INFO: Last reserved IP address allocated by host-local
 Creating debugging pod node-debugger-k8s-worker2-698p9 with container debugger on node k8s-worker2.
 10.244.1.2
 21:55:46 - INFO: Virtual Ethernet network devices connected to cni0
-5: veth4bea4427@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default 
+5: veth4bea4427@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master cni0 state UP mode DEFAULT group default
     link/ether 6e:aa:14:e4:6a:8f brd ff:ff:ff:ff:ff:ff link-netns cni-6dac480a-dade-afc0-f281-72bff90f6d4f
 
 21:55:47 - INFO: Bridge network devices
@@ -254,7 +255,7 @@ bridge name	bridge id		STP enabled	interfaces
 cni0		8000.ee6a517b0372	no		veth4bea4427
 
 21:55:48 - INFO: cni0 network routes
-10.244.1.0/24 dev cni0 proto kernel scope link src 10.244.1.1 
+10.244.1.0/24 dev cni0 proto kernel scope link src 10.244.1.1
 === k8s-worker Worker node info ===
 
 21:55:49 - INFO: MAC addresses learned by cni0
@@ -285,9 +286,9 @@ e6:7d:c5:e2:80:1a dst 172.80.0.2 self permanent
 
 21:55:54 - INFO: Network device details of flannel.1
 Creating debugging pod node-debugger-k8s-worker2-mnjmp with container debugger on node k8s-worker2.
-3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default 
-    link/ether 3a:bb:55:60:be:4e brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 68 maxmtu 65535 
-    vxlan id 1 local 172.80.0.3 dev eth0 srcport 0 0 dstport 8472 nolearning ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+3: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default
+    link/ether 3a:bb:55:60:be:4e brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 68 maxmtu 65535
+    vxlan id 1 local 172.80.0.3 dev eth0 srcport 0 0 dstport 8472 nolearning ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
 
 21:55:56 - INFO: Flannel's VTEP MAC address stored into Annotations
 {"VNI":1,"VtepMAC":"3a:bb:55:60:be:4e"}

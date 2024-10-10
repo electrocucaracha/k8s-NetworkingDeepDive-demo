@@ -1,18 +1,20 @@
 # Pause containers
 
-The [pause][1] container serves as the *parent container* for all of the
+The [pause][1] container serves as the _parent container_ for all of the
 containers in the Kubernetes pod. The pause container has two main
 responsibilities:
 
 1. Serves as the basis of Linux namespace sharing in the pod.
-* Allows containers to communicate directly using the localhost.
-* Allows the containers to share their inter-process communication (IPC)
-namespace with the other containers so they can communicate directly through
-shared-memory with other containers.
-* Allows containers to share their process ID (PID) namespace with other
-containers.
+
+- Allows containers to communicate directly using the localhost.
+- Allows the containers to share their inter-process communication (IPC)
+  namespace with the other containers so they can communicate directly through
+  shared-memory with other containers.
+- Allows containers to share their process ID (PID) namespace with other
+  containers.
+
 2. With PID (process ID) namespace sharing [enabled][3], it serves as PID 1
-for each pod and reaps zombie processes.
+   for each pod and reaps zombie processes.
 
 The scripts of this folder simulate the [Dockershim's RunPodSandbox
 function][2] used by Kubelet as initial step for the Pod's creation.
@@ -25,7 +27,7 @@ non-docker tools.
 
 ## Demo output example
 
-The following output was capture from the *deploy.log* file generated
+The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
 ```bash

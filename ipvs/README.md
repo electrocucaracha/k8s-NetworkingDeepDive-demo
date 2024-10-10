@@ -11,9 +11,9 @@ The scripts of this folder compares two scheduling algorithms supported by IPVS
 
 - Round Robin - Distributes jobs equally amongst the available real server
 - Weighted Round Robin - Assigns jobs to real servers proportionally to there
-real servers’ weight. Servers with higher weights receive new jobs first and get
-more jobs than servers with lower weights. Servers with equal weights get an
-equal distribution of new jobs.
+  real servers’ weight. Servers with higher weights receive new jobs first and get
+  more jobs than servers with lower weights. Servers with equal weights get an
+  equal distribution of new jobs.
 
 ## Demo output example
 
@@ -94,9 +94,9 @@ IP Virtual Server version 1.2.1 (size=4096)
 Prot LocalAddress:Port Scheduler Flags
   -> RemoteAddress:Port           Forward Weight ActiveConn InActConn
 TCP  1.2.3.4:80 wrr
-  -> 172.80.0.2:80                Masq    3      2          4         
-  -> 172.80.0.3:80                Masq    1      0          6         
-  -> 172.80.0.4:80                Masq    1      0          6         
+  -> 172.80.0.2:80                Masq    3      2          4
+  -> 172.80.0.3:80                Masq    1      0          6
+  -> 172.80.0.4:80                Masq    1      0          6
 
 01:59:22 - INFO: Using Weighted Round Robin scheduling algorithm
 

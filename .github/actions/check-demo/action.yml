@@ -10,7 +10,7 @@
 name: Check Demo
 inputs:
   demo-type:
-    description: 'Demo type'
+    description: "Demo type"
     required: true
 runs:
   using: "composite"

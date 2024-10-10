@@ -1,8 +1,12 @@
 # Kubernetes Networking deep dive Demo
+
 <!-- markdown-link-check-disable-next-line -->
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
+
 <!-- markdown-link-check-disable-next-line -->
+
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=electrocucaracha.k8s-NetworkingDeepDive-demo)
 
 ## Summary
@@ -20,7 +24,7 @@ Kubernetes connects containers in different setups.
 ## Virtual Machines
 
 The [Vagrant tool][1] is used for provisioning Ubuntu Focal Virtual
-Machines. It's highly recommended to use the  *setup.sh* script
+Machines. It's highly recommended to use the _setup.sh_ script
 of the [bootstrap-vagrant project][2] for installing Vagrant
 dependencies and plugins required for this project. That script
 supports two Virtualization providers (Libvirt and VirtualBox) which

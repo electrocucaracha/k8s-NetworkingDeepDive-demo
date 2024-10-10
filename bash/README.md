@@ -8,20 +8,20 @@ plugins.
 
 A CNI plugin must provide at least the following two things:
 
-* Connectivity - Every Pod must have a NIC (`$CNI_IFNAME`) to communicate with
-anything outside of its own network namespace. Some local processes on the Node
-(e.g. kubelet) need to reach PodIP from the root network namespace (e.g. to
-perform health and readiness checks), hence the root NS connectivity
-requirement.
+- Connectivity - Every Pod must have a NIC (`$CNI_IFNAME`) to communicate with
+  anything outside of its own network namespace. Some local processes on the Node
+  (e.g. kubelet) need to reach PodIP from the root network namespace (e.g. to
+  perform health and readiness checks), hence the root NS connectivity
+  requirement.
 
-* Reachability - Pods from other Nodes can reach each other directly (without
-NAT).
+- Reachability - Pods from other Nodes can reach each other directly (without
+  NAT).
 
-  * Every Pod gets a unique IP from a PodCIDR range configured on the Node.
-  * This range is assigned to the Node during kubelet bootstrapping phase.
-  * Nodes are not aware of PodCIDRs assigned to other Nodes, allocations are
-  normally managed by the controller-manager based on the `--cluster-cidr`
-  configuration flag.
+  - Every Pod gets a unique IP from a PodCIDR range configured on the Node.
+  - This range is assigned to the Node during kubelet bootstrapping phase.
+  - Nodes are not aware of PodCIDRs assigned to other Nodes, allocations are
+    normally managed by the controller-manager based on the `--cluster-cidr`
+    configuration flag.
 
 Kubernetes first creates a container(`$CNI_CONTAINERID`) without a network
 interface and then calls a CNI plug-in. The plug-in configures container
@@ -32,10 +32,11 @@ plug-in itself may do whatever it needs to do its job.
 
 ## Demo output example
 
-The following output was capture from the *deploy.log* file generated
+The following output was capture from the _deploy.log_ file generated
 from the `vagrant up` execution.
 
 <!-- markdownlint-disable MD010 -->
+
 ```bash
 pod/test created
 pod/test condition met
@@ -45,7 +46,7 @@ pod/test condition met
     link/ether 6a:4c:78:6a:e9:d7 brd ff:ff:ff:ff:ff:ff
     inet 10.244.0.5/24 scope global eth0
        valid_lft forever preferred_lft forever
-    inet6 fe80::684c:78ff:fe6a:e9d7/64 scope link 
+    inet6 fe80::684c:78ff:fe6a:e9d7/64 scope link
        valid_lft forever preferred_lft forever
 
 21:13:29 - DEBUG: stdin: {"cniVersion":"0.3.1","name":"mynet","network":"10.244.0.0/16","subnet":"10.244.0.0/24","type":"bash-cni"}

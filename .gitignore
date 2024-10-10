@@ -2,3 +2,5 @@
 .tox/
 super-linter.log
 *.dic
+node_modules/
+package*.json

@@ -11,29 +11,29 @@ name: Scheduled Versions and Dictionary verification
 # yamllint disable-line rule:truthy
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   workflow_dispatch:
 permissions:
-  contents: write  # for technote-space/create-pr-action to push code
-  pull-requests: write  # for technote-space/create-pr-action to create a PR
+  contents: write # for technote-space/create-pr-action to push code
+  pull-requests: write # for technote-space/create-pr-action to create a PR
 jobs:
   check-versions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871  # 4.2.1
-      - uses: technote-space/create-pr-action@91114507cf92349bec0a9a501c2edf1635427bc5  # 2.1.4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # 4.2.1
+      - uses: technote-space/create-pr-action@91114507cf92349bec0a9a501c2edf1635427bc5 # 2.1.4
         with:
           EXECUTE_COMMANDS: |
             ./ci/update_versions.sh
-          COMMIT_MESSAGE: 'Upgrade pinned versions'
-          COMMIT_NAME: 'electrocucaracha bot'
+          COMMIT_MESSAGE: "Upgrade pinned versions"
+          COMMIT_NAME: "electrocucaracha bot"
           PR_BRANCH_NAME: "versions-update-${PR_ID}"
-          PR_TITLE: 'chore: update versions'
+          PR_TITLE: "chore: update versions"
   check-dictionary:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871  # 4.2.1
-      - uses: technote-space/create-pr-action@91114507cf92349bec0a9a501c2edf1635427bc5  # 2.1.4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # 4.2.1
+      - uses: technote-space/create-pr-action@91114507cf92349bec0a9a501c2edf1635427bc5 # 2.1.4
         with:
           EXECUTE_COMMANDS: |
             sudo apt-get update
@@ -50,7 +50,7 @@ jobs:
             # Add missing words
             pyspelling -c .spellcheck.yml | sed '/^<.*>/d;/^!!!/d;/^--/d;/^Misspelled words:/d;/^$/d;/^Spelling check passed :)$/d' | sort --ignore-case | uniq --ignore-case | tee --append .github/.wordlist.txt
             sort --ignore-case --output=.github/.wordlist.txt .github/.wordlist.txt
-          COMMIT_MESSAGE: 'Update dictionary definitions'
-          COMMIT_NAME: 'spellchecker bot'
+          COMMIT_MESSAGE: "Update dictionary definitions"
+          COMMIT_NAME: "spellchecker bot"
           PR_BRANCH_NAME: "versions-update-${PR_ID}"
-          PR_TITLE: 'chore: update dictionary'
+          PR_TITLE: "chore: update dictionary"
