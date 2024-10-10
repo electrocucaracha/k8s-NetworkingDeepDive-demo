@@ -15,6 +15,7 @@ lint:
 	-e RUN_LOCAL=true \
 	-e VALIDATE_KUBERNETES_KUBEVAL=false \
 	-e VALIDATE_CPP=false \
+	-e VALIDATE_SHELL_SHFMT=false \
 	-e LINTER_RULES_PATH=/ \
 	-e EDITORCONFIG_FILE_NAME=.editorconfig \
 	github/super-linter
