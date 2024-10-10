@@ -17,7 +17,7 @@ set -o nounset
 source /opt/common/_utils.sh
 
 node_img=ubuntu:22.04
-demo_img=busybox:1.36.1
+demo_img=busybox:1.37.0
 
 function _run_cmd {
     if kubectl auth can-i debug '*' -A >/dev/null && [ "${K8S_ENABLE_EPHEMERAL_CONTAINERS:-true}" == "true" ]; then
