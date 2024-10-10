@@ -22,6 +22,8 @@ demo_img=busybox:1.36.1
 function _run_cmd {
     if kubectl auth can-i debug '*' -A >/dev/null && [ "${K8S_ENABLE_EPHEMERAL_CONTAINERS:-true}" == "true" ]; then
         kubectl debug "nodes/${1}" -ti --image "$node_img" -- chroot /host/ "${@:2}"
+    elif [ "${CDEBUG_ENABLED:-false}" == "true" ]; then
+        cdebug exec --image "$node_img" "$1" bash -c "${*:2}"
     else
         sudo docker exec "$1" bash -c "${*:2}"
     fi

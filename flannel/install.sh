@@ -18,6 +18,7 @@ export PKG_CNI_PLUGINS_INSTALL_FLANNEL=true
 export PKG="cni-plugins"
 export PKG_COMMANDS_LIST="docker,kind,kubectl"
 export PKG_KREW_PLUGINS_LIST=" "
+export CDEBUG_VERSION=0.0.18
 
 # shellcheck disable=SC1091
 source /etc/os-release || source /usr/lib/os-release
@@ -36,3 +37,8 @@ esac
 # Install dependencies
 # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
 curl -fsSL http://bit.ly/install_pkg | bash
+
+if ! command -v cdebug >/dev/null; then
+    curl -s "https://i.jpillora.com/iximiuz/cdebug@v${CDEBUG_VERSION}!" | bash
+    cdebug completion bash | sudo tee /etc/bash_completion.d/cdebug >/dev/null
+fi
