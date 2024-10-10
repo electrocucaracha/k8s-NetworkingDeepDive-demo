@@ -7,13 +7,11 @@
 # which accompanies this distribution, and is available at
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
-
 name: Check Demo
 inputs:
   demo-type:
     description: 'Demo type'
     required: true
-
 runs:
   using: "composite"
   steps:

@@ -25,3 +25,5 @@ lint:
 fmt:
 	command -v shfmt > /dev/null || curl -s "https://i.jpillora.com/mvdan/sh!!?as=shfmt" | bash
 	shfmt -l -w -s .
+	command -v yamlfmt > /dev/null || curl -s "https://i.jpillora.com/google/yamlfmt!!" | bash
+	yamlfmt -dstar **/*.{yaml,yml}
