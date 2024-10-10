@@ -54,6 +54,8 @@ function _get_latest_go {
     fi
 }
 
+trap "make fmt" EXIT
+
 eval "$(curl -fsSL https://raw.githubusercontent.com/electrocucaracha/pkg-mgr_scripts/master/ci/pinned_versions.env)"
 
 sed -i "s|PKG_FLANNEL_VERSION:-.*|PKG_FLANNEL_VERSION:-$PKG_FLANNEL_VERSION}|g" flannel/install.sh
@@ -80,11 +82,12 @@ sed -i "s|containernetworking/cni/cnitool@v.*|containernetworking/cni/cnitool@v$
 # Update flannel definition
 wget -q -O ./flannel/kube-flannel.yaml https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 
-# Update GitHub Actions Commit Hashes
-gh_actions=$(grep -r "uses: [a-z\-]*/[\_a-z\-]*@" .github/workflows/ | sed 's/@.*//' | awk -F ': ' '{ print $3 }' | sort | uniq)
+# Update GitHub Action commit hashes
+gh_actions=$(grep -r "uses: [a-zA-Z\-]*/[\_a-z\-]*@" .github/ | sed 's/@.*//' | awk -F ': ' '{ print $3 }' | sort -u)
 for action in $gh_actions; do
-    commit_hash=$(git ls-remote --tags "https://github.com/$action" | grep 'refs/tags/[v]\?[0-9][0-9\.]*$' | awk '{ print $NF,$0 }' | sort -k1,1 -V | cut -f2- -d' ' | grep -oh '.*refs/tags/[v0-9\.]*$' | tail -1 | awk '{ printf "%s # %s\n",$1,$2 }')
-    grep -ElRZ "uses: $action@" .github/workflows/ | xargs -0 -l sed -i -e "s|uses: $action@.*|uses: $action@$commit_hash|g"
+    commit_hash=$(git ls-remote "https://github.com/$action" | grep 'refs/tags/[v]\?[0-9][0-9\.]*$' | sed 's|refs/tags/[vV]\?[\.]\?||g' | sort -u -k2 -V | tail -1 | awk '{ printf "%s # %s\n",$1,$2 }')
+    # shellcheck disable=SC2267
+    grep -ElRZ "uses: $action@" .github/ | xargs -0 -l sed -i -e "s|uses: $action@.*|uses: $action@$commit_hash|g"
 done
 
 # Update cdebug
