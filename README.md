@@ -30,12 +30,16 @@ dependencies and plugins required for this project. That script
 supports two Virtualization providers (Libvirt and VirtualBox) which
 are determine by the **PROVIDER** environment variable.
 
-    curl -fsSL http://bit.ly/initVagrant | PROVIDER=libvirt bash
+```bash
+curl -fsSL http://bit.ly/initVagrant | PROVIDER=libvirt bash
+```
 
 Once Vagrant is installed, it's possible to provision a Virtual
 Machine using the following instructions:
 
-    vagrant up <pause|ipvs|flannel|bash|ebpf>
+```bash
+vagrant up <pause|ipvs|flannel|bash|ebpf>
+```
 
 ## Linux interfaces for virtual networking
 

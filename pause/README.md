@@ -6,14 +6,14 @@ responsibilities:
 
 1. Serves as the basis of Linux namespace sharing in the pod.
 
-- Allows containers to communicate directly using the localhost.
-- Allows the containers to share their inter-process communication (IPC)
-  namespace with the other containers so they can communicate directly through
-  shared-memory with other containers.
-- Allows containers to share their process ID (PID) namespace with other
-  containers.
+   - Allows containers to communicate directly using the localhost.
+   - Allows the containers to share their inter-process communication (IPC)
+     namespace with the other containers so they can communicate directly through
+     shared-memory with other containers.
+   - Allows containers to share their process ID (PID) namespace with other
+     containers.
 
-2. With PID (process ID) namespace sharing [enabled][3], it serves as PID 1
+1. With PID (process ID) namespace sharing [enabled][3], it serves as PID 1
    for each pod and reaps zombie processes.
 
 The scripts of this folder simulate the [Dockershim's RunPodSandbox
