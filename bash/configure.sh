@@ -58,6 +58,7 @@ fi
 
 trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
+    # editorconfig-checker-disable
     cat <<EOF | sudo kind create cluster --name k8s --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -72,6 +73,7 @@ nodes:
       - hostPath: /opt/containernetworking/plugins
         containerPath: /opt/cni/plugins/bin
 EOF
+    # editorconfig-checker-enable
     mkdir -p "$HOME/.kube"
     sudo cp /root/.kube/config "$HOME/.kube/config"
     sudo chown -R "$USER" "$HOME/.kube/"
@@ -80,6 +82,7 @@ fi
 
 for node in $(sudo docker ps --filter "name=k8s-*" --format "{{.Names}}"); do
     pod_cidr=$(_get_pod_cidr "$node")
+    # editorconfig-checker-disable
     cat <<EOF >/tmp/10-bash-cni-plugin.conf
 {
   "cniVersion": "0.3.1",
@@ -89,6 +92,7 @@ for node in $(sudo docker ps --filter "name=k8s-*" --format "{{.Names}}"); do
   "subnet": "$pod_cidr"
 }
 EOF
+    # editorconfig-checker-enable
     cloud_init="
 brctl addbr cni0
 ip link set cni0 up

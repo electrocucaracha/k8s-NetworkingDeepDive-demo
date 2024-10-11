@@ -35,6 +35,7 @@ fi
 
 trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
+    # editorconfig-checker-disable
     cat <<EOF | sudo kind create cluster --name k8s --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -58,6 +59,7 @@ nodes:
       - hostPath: /opt/containernetworking/plugins
         containerPath: /opt/cni/bin
 EOF
+    # editorconfig-checker-enable
     mkdir -p "$HOME/.kube"
     sudo cp /root/.kube/config "$HOME/.kube/config"
     sudo chown -R "$USER" "$HOME/.kube/"
