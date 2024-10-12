@@ -8,6 +8,7 @@
 # http://www.apache.org/licenses/LICENSE-2.0
 ##############################################################################
 name: Check Demo
+description: Installs, configures and runs a specific demo
 inputs:
   demo-type:
     description: "Demo type"
