@@ -13,7 +13,6 @@ DOCKER_CMD ?= $(shell which docker 2> /dev/null || which podman 2> /dev/null || 
 lint:
 	sudo -E $(DOCKER_CMD) run --rm -v $$(pwd):/tmp/lint \
 	-e RUN_LOCAL=true \
-	-e VALIDATE_KUBERNETES_KUBEVAL=false \
 	-e VALIDATE_CPP=false \
 	-e VALIDATE_SHELL_SHFMT=false \
 	-e VALIDATE_CHECKOV=false \
