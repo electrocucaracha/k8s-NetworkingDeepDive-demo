@@ -18,7 +18,7 @@ lint:
 	-e VALIDATE_SHELL_SHFMT=false \
 	-e LINTER_RULES_PATH=/ \
 	-e EDITORCONFIG_FILE_NAME=.editorconfig \
-	github/super-linter
+	ghcr.io/super-linter/super-linter
 	tox -e lint
 
 .PHONY: fmt
