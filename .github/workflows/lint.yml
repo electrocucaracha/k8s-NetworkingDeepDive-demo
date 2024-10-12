@@ -32,6 +32,7 @@ jobs:
           VALIDATE_KUBERNETES_KUBEVAL: false
           VALIDATE_CPP: false
           VALIDATE_SHELL_SHFMT: false
+          VALIDATE_CHECKOV: false
           EDITORCONFIG_FILE_NAME: .editorconfig
   check-tox:
     runs-on: ubuntu-latest

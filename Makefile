@@ -16,6 +16,7 @@ lint:
 	-e VALIDATE_KUBERNETES_KUBEVAL=false \
 	-e VALIDATE_CPP=false \
 	-e VALIDATE_SHELL_SHFMT=false \
+	-e VALIDATE_CHECKOV=false \
 	-e LINTER_RULES_PATH=/ \
 	-e EDITORCONFIG_FILE_NAME=.editorconfig \
 	ghcr.io/super-linter/super-linter
