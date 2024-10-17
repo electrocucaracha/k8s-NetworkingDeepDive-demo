@@ -176,7 +176,6 @@ PodCIDR
 PodCIDRs
 PodIP
 PPID
-pre
 preconfigured
 Prot
 proto
