@@ -67,7 +67,6 @@ etcd
 eth
 ethertype
 eui
-extensibility
 fc
 fca
 feda
@@ -188,7 +187,6 @@ RemoteAddress
 ret
 rubocop
 RunPodSandbox
-runtime
 sdbd
 sdtout
 segs
