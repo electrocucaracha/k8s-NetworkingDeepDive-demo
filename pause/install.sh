@@ -64,6 +64,6 @@ fi
 
 # recvtty - Reference implementation of a consumer of runC's --console-socket API
 if ! command -v recvtty; then
-    go install github.com/opencontainers/runc/contrib/cmd/recvtty@v1.2.4
+    go install github.com/opencontainers/runc/tests/cmd/recvtty@v1.2.4
     sudo mv ~/go/bin/recvtty /usr/bin/
 fi
