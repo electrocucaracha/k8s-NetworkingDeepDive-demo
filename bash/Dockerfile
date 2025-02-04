@@ -1,4 +1,4 @@
-FROM kindest/node:v1.31.1
+FROM kindest/node:v1.32.1
 
 COPY bin/plugin.sh /opt/cni/bin/bash-cni
 
