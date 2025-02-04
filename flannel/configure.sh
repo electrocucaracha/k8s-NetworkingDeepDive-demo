@@ -29,6 +29,8 @@ function get_status {
     kubectl describe nodes
 }
 
+sudo modprobe br_netfilter
+
 if [ -z "$(sudo docker images kindest/node:flannel -q)" ]; then
     sudo docker build --tag kindest/node:flannel --no-cache .
 fi
@@ -69,7 +71,8 @@ EOF
     demo_imgs=$(grep "^.*_img=" demo.sh | awk -F '=' '{ print $2}')
     for img in $flannel_imgs $demo_imgs; do
         docker pull $img
-        kind load docker-image $img --name k8s
+        # TODO: Investigate about this issue (https://github.com/kubernetes-sigs/kind/blob/v0.26.0/pkg/cluster/nodeutils/util.go#L95)
+        kind load docker-image $img --name k8s ||:
     done
 EONG
 fi
