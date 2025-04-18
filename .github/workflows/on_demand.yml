@@ -61,8 +61,8 @@ jobs:
             ebpf:
               - 'ebpf/*'
   check-demo:
-    name: Check demo on Ubuntu Virtual Environment
-    runs-on: ubuntu-20.04
+    name: Check demo on Ubuntu Latest Virtual Environment
+    runs-on: ubuntu-latest
     needs: changes
     strategy:
       fail-fast: false
