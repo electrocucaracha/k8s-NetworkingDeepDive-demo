@@ -11,17 +11,18 @@ name: Scheduled Versions and Dictionary verification
 # yamllint disable-line rule:truthy
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * 5"
   workflow_dispatch:
-permissions:
-  contents: write # for technote-space/create-pr-action to push code
-  pull-requests: write # for technote-space/create-pr-action to create a PR
 jobs:
   check-versions:
+    permissions:
+      contents: write # for technote-space/create-pr-action to push code
+      pull-requests: write # for technote-space/create-pr-action to create a PR
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
         with:
+          # Fine-grained PAT with contents:write and workflows:write scopes
           token: ${{ secrets.WORKFLOW_TOKEN }}
       - uses: technote-space/create-pr-action@91114507cf92349bec0a9a501c2edf1635427bc5 # 2.1.4
         with:
