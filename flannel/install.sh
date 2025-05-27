@@ -13,7 +13,7 @@ set -o xtrace
 set -o errexit
 set -o nounset
 
-export PKG_FLANNEL_VERSION=${PKG_FLANNEL_VERSION:-1.6.2-flannel1}
+export PKG_FLANNEL_VERSION=${PKG_FLANNEL_VERSION:-1.7.1-flannel1}
 export PKG_CNI_PLUGINS_INSTALL_FLANNEL=true
 export PKG="cni-plugins"
 export PKG_COMMANDS_LIST="docker,kind,kubectl"
