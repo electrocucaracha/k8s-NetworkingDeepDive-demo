@@ -16,7 +16,6 @@ A CNI plugin must provide at least the following two things:
 
 - Reachability - Pods from other Nodes can reach each other directly (without
   NAT).
-
   - Every Pod gets a unique IP from a PodCIDR range configured on the Node.
   - This range is assigned to the Node during kubelet bootstrapping phase.
   - Nodes are not aware of PodCIDRs assigned to other Nodes, allocations are
