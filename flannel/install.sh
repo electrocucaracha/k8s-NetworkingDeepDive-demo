@@ -24,14 +24,14 @@ export CDEBUG_VERSION=0.0.18
 source /etc/os-release || source /usr/lib/os-release
 case ${ID,,} in
 ubuntu | debian)
-    if command -v systemd-resolve && (! systemd-resolve --status | grep -q 1.1.1.1); then
-        sudo systemd-resolve --interface "$(ip route get 1.1.1.1 | grep "^1." | awk '{ print $5 }')" --set-dns 1.1.1.1
-    fi
-    if ! command -v curl; then
-        sudo apt-get update -qq >/dev/null
-        sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 curl
-    fi
-    ;;
+	if command -v systemd-resolve && (! systemd-resolve --status | grep -q 1.1.1.1); then
+		sudo systemd-resolve --interface "$(ip route get 1.1.1.1 | grep "^1." | awk '{ print $5 }')" --set-dns 1.1.1.1
+	fi
+	if ! command -v curl; then
+		sudo apt-get update -qq >/dev/null
+		sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 curl
+	fi
+	;;
 esac
 
 # Install dependencies
@@ -39,6 +39,6 @@ esac
 curl -fsSL http://bit.ly/install_pkg | bash
 
 if ! command -v cdebug >/dev/null; then
-    curl -s "https://i.jpillora.com/iximiuz/cdebug@v${CDEBUG_VERSION}!" | bash
-    cdebug completion bash | sudo tee /etc/bash_completion.d/cdebug >/dev/null
+	curl -s "https://i.jpillora.com/iximiuz/cdebug@v${CDEBUG_VERSION}!" | bash
+	cdebug completion bash | sudo tee /etc/bash_completion.d/cdebug >/dev/null
 fi

@@ -17,13 +17,13 @@ set -o nounset
 source /opt/common/_utils.sh
 
 function _ping {
-    local service=$1
-    local ip=$2
+	local service=$1
+	local ip=$2
 
-    info "Ping $service service"
-    sudo -E perf trace -e "net:*" -o "$HOME/events.txt" ping -c 3 "$ip" | grep "time="
-    sed -i 's|^.*ping/[0-9]* ||;s|skbaddr.*$||;s|napi_id.*$||' "$HOME/events.txt"
-    sort <"$HOME/events.txt" | uniq >"$HOME/events_$service.txt"
+	info "Ping $service service"
+	sudo -E perf trace -e "net:*" -o "$HOME/events.txt" ping -c 3 "$ip" | grep "time="
+	sed -i 's|^.*ping/[0-9]* ||;s|skbaddr.*$||;s|napi_id.*$||' "$HOME/events.txt"
+	sort <"$HOME/events.txt" | uniq >"$HOME/events_$service.txt"
 }
 
 _ping original "$(hostname -I | awk '{ print $1}')"

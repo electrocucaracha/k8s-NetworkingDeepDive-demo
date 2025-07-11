@@ -20,31 +20,31 @@ node_img=ubuntu:22.04
 demo_img=busybox:1.37.0
 
 function _run_cmd {
-    if kubectl auth can-i debug '*' -A >/dev/null && [ "${K8S_ENABLE_EPHEMERAL_CONTAINERS:-true}" == "true" ]; then
-        kubectl debug "nodes/${1}" -ti --image "$node_img" -- chroot /host/ "${@:2}"
-    elif [ "${CDEBUG_ENABLED:-false}" == "true" ]; then
-        cdebug exec --image "$node_img" "$1" bash -c "${*:2}"
-    else
-        sudo docker exec "$1" bash -c "${*:2}"
-    fi
+	if kubectl auth can-i debug '*' -A >/dev/null && [ "${K8S_ENABLE_EPHEMERAL_CONTAINERS:-true}" == "true" ]; then
+		kubectl debug "nodes/${1}" -ti --image "$node_img" -- chroot /host/ "${@:2}"
+	elif [ "${CDEBUG_ENABLED:-false}" == "true" ]; then
+		cdebug exec --image "$node_img" "$1" bash -c "${*:2}"
+	else
+		sudo docker exec "$1" bash -c "${*:2}"
+	fi
 }
 
 info "Cluster info:"
 kubectl get nodes -o custom-columns=name:.metadata.name,podCIDR:.spec.podCIDR,InternalIP:.status.addresses[0].address
 kubectl get pods -A -o custom-columns=name:.metadata.name,podIP:.status.podIP,nodeName:.spec.nodeName
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do
-    echo "=== $worker Worker node info ==="
-    info "Flannel dynamic configuration"
-    _run_cmd "$worker" cat /run/flannel/subnet.env
-    info "Network IPv4 addresses"
-    _run_cmd "$worker" ip -4 address
-    info "VXLAN network devices"
-    # Virtual Tunnel End Point(VTEP) is  an entity which originates and/or terminates VXLAN tunnels.
-    _run_cmd "$worker" ip -details link show type vxlan
-    info "Network routes"
-    _run_cmd "$worker" ip route
-    info "ARP cache entries"
-    _run_cmd "$worker" ip -4 neigh
+	echo "=== $worker Worker node info ==="
+	info "Flannel dynamic configuration"
+	_run_cmd "$worker" cat /run/flannel/subnet.env
+	info "Network IPv4 addresses"
+	_run_cmd "$worker" ip -4 address
+	info "VXLAN network devices"
+	# Virtual Tunnel End Point(VTEP) is  an entity which originates and/or terminates VXLAN tunnels.
+	_run_cmd "$worker" ip -details link show type vxlan
+	info "Network routes"
+	_run_cmd "$worker" ip route
+	info "ARP cache entries"
+	_run_cmd "$worker" ip -4 neigh
 done
 
 info "Pods creation"
@@ -65,20 +65,20 @@ K8S_ENABLE_EPHEMERAL_CONTAINERS=false _run_cmd k8s-worker tshark -V -c 2 -i "$ni
 
 info "Workers status after Pods creation"
 for worker in $(sudo docker ps --filter "name=k8s-worker*" --format "{{.Names}}"); do
-    echo "=== $worker Worker node info ==="
-    info "Last reserved IP address allocated by host-local"
-    # "host-local" CNI plugin allocates and maintains the IP addresses to pods.
-    # cbr0 is the name defined in cni-conf.json configuration file
-    _run_cmd "$worker" cat /var/lib/cni/networks/cbr0/last_reserved_ip.0
-    info "Virtual Ethernet network devices connected to cni0"
-    # A new vEth pair has been created for the pod
-    _run_cmd "$worker" ip link show type veth | grep cni
-    info "Bridge network devices"
-    # The cni0 bridge has been created to connect pods within worker node
-    _run_cmd "$worker" brctl show
-    info "cni0 network routes"
-    # A new route has been created to pod internal communication
-    _run_cmd "$worker" ip route | grep cni0
+	echo "=== $worker Worker node info ==="
+	info "Last reserved IP address allocated by host-local"
+	# "host-local" CNI plugin allocates and maintains the IP addresses to pods.
+	# cbr0 is the name defined in cni-conf.json configuration file
+	_run_cmd "$worker" cat /var/lib/cni/networks/cbr0/last_reserved_ip.0
+	info "Virtual Ethernet network devices connected to cni0"
+	# A new vEth pair has been created for the pod
+	_run_cmd "$worker" ip link show type veth | grep cni
+	info "Bridge network devices"
+	# The cni0 bridge has been created to connect pods within worker node
+	_run_cmd "$worker" brctl show
+	info "cni0 network routes"
+	# A new route has been created to pod internal communication
+	_run_cmd "$worker" ip route | grep cni0
 done
 
 echo "=== k8s-worker Worker node info ==="

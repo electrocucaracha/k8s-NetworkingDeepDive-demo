@@ -16,14 +16,14 @@ set -o nounset
 export PKG_COMMANDS_LIST="ipvsadm,ipset"
 
 if ! command -v curl; then
-    # shellcheck disable=SC1091
-    source /etc/os-release || source /usr/lib/os-release
-    case ${ID,,} in
-    ubuntu | debian)
-        sudo apt-get update
-        sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 --no-install-recommends curl
-        ;;
-    esac
+	# shellcheck disable=SC1091
+	source /etc/os-release || source /usr/lib/os-release
+	case ${ID,,} in
+	ubuntu | debian)
+		sudo apt-get update
+		sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 --no-install-recommends curl
+		;;
+	esac
 fi
 # Install dependencies
 # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts

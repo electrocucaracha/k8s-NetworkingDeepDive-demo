@@ -19,47 +19,47 @@ source defaults.env
 source /opt/common/_utils.sh
 
 function cleanup {
-    info "Stopping $CONTAINERID container"
-    if runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*running"; then
-        runc --root "$HOME/.runc" kill "$CONTAINERID" KILL
-    fi
+	info "Stopping $CONTAINERID container"
+	if runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*running"; then
+		runc --root "$HOME/.runc" kill "$CONTAINERID" KILL
+	fi
 
-    attempt_counter=0
-    max_attempts=15
-    until runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*stopped"; do
-        if [ ${attempt_counter} -eq ${max_attempts} ]; then
-            echo "Max attempts reached"
-            return
-        fi
-        attempt_counter=$((attempt_counter + 1))
-        sleep 1
-    done
-    if [ -f /tmp/recvtty.pid ]; then
-        kill -9 "$(cat /tmp/recvtty.pid)"
-        rm -f /tmp/recvtty.pid
-    fi
-    if [ -S /tmp/tty.sock ]; then
-        rm -f /tmp/tty.sock
-    fi
-    if runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID"; then
-        runc --root "$HOME/.runc" delete "$CONTAINERID"
-    fi
+	attempt_counter=0
+	max_attempts=15
+	until runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID.*stopped"; do
+		if [ ${attempt_counter} -eq ${max_attempts} ]; then
+			echo "Max attempts reached"
+			return
+		fi
+		attempt_counter=$((attempt_counter + 1))
+		sleep 1
+	done
+	if [ -f /tmp/recvtty.pid ]; then
+		kill -9 "$(cat /tmp/recvtty.pid)"
+		rm -f /tmp/recvtty.pid
+	fi
+	if [ -S /tmp/tty.sock ]; then
+		rm -f /tmp/tty.sock
+	fi
+	if runc --root "$HOME/.runc" list | grep -q "^$CONTAINERID"; then
+		runc --root "$HOME/.runc" delete "$CONTAINERID"
+	fi
 }
 
 trap cleanup EXIT
 
 # NOTE: https://github.com/opencontainers/runc/blob/v1.0.0-rc92/docs/terminals.md#detached
 if [ ! -S /tmp/tty.sock ]; then
-    info "Creating pseudo-terminal in detached mode"
-    (recvtty --pid-file /tmp/recvtty.pid --mode null /tmp/tty.sock &) &
+	info "Creating pseudo-terminal in detached mode"
+	(recvtty --pid-file /tmp/recvtty.pid --mode null /tmp/tty.sock &) &
 fi
 
 if [ ! -d /tmp/images/busybox/ ] || [ -z "$(ls -A /tmp/images/busybox)" ]; then
-    info "Pulling busybox image"
-    mkdir -p /tmp/images
-    pushd /tmp/images >/dev/null
-    skopeo copy docker://busybox:1.37.0 oci:busybox:1.37.0 >/dev/null
-    popd >/dev/null
+	info "Pulling busybox image"
+	mkdir -p /tmp/images
+	pushd /tmp/images >/dev/null
+	skopeo copy docker://busybox:1.37.0 oci:busybox:1.37.0 >/dev/null
+	popd >/dev/null
 fi
 
 pushd "$(mktemp -d)" >/dev/null

@@ -14,19 +14,19 @@ set -o errexit
 set -o nounset
 
 if ! command -v curl; then
-    # shellcheck disable=SC1091
-    source /etc/os-release || source /usr/lib/os-release
-    case ${ID,,} in
-    ubuntu | debian)
-        sudo apt-get update
-        sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 --no-install-recommends curl
-        ;;
-    esac
+	# shellcheck disable=SC1091
+	source /etc/os-release || source /usr/lib/os-release
+	case ${ID,,} in
+	ubuntu | debian)
+		sudo apt-get update
+		sudo apt-get install -y -qq -o=Dpkg::Use-Pty=0 --no-install-recommends curl
+		;;
+	esac
 fi
 
 pkg="linux-tools-$(uname -r)"
 if ! command -v docker; then
-    pkg+=" docker"
+	pkg+=" docker"
 fi
 # NOTE: Shorten link -> https://github.com/electrocucaracha/pkg-mgr_scripts
 curl -fsSL http://bit.ly/install_pkg | PKG=$pkg bash
