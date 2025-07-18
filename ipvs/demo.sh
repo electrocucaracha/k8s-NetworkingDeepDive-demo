@@ -19,25 +19,25 @@ source defaults.env
 source /opt/common/_utils.sh
 
 function print_stats {
-    sleep 5
-    sudo ipvsadm --list --numeric --stats --rate
+	sleep 5
+	sudo ipvsadm --list --numeric --stats --rate
 }
 
 function generate_traffic {
-    if [[ ${1:-false} == "false" ]]; then
-        info "Generating HTTP traffic (Host to Service)"
-    else
-        info "Generating HTTP traffic (Namespace to Service)"
-    fi
-    for _ in {1..6}; do
-        if [[ ${1:-false} == "false" ]]; then
-            curl -s "$SERVICE_ADDRESS"
-        else
-            sudo ip netns exec pod1 curl -s --connect-timeout 1 "$SERVICE_ADDRESS" || :
-        fi
-        echo ""
-    done
-    print_stats
+	if [[ ${1:-false} == "false" ]]; then
+		info "Generating HTTP traffic (Host to Service)"
+	else
+		info "Generating HTTP traffic (Namespace to Service)"
+	fi
+	for _ in {1..6}; do
+		if [[ ${1:-false} == "false" ]]; then
+			curl -s "$SERVICE_ADDRESS"
+		else
+			sudo ip netns exec pod1 curl -s --connect-timeout 1 "$SERVICE_ADDRESS" || :
+		fi
+		echo ""
+	done
+	print_stats
 }
 
 # Round Robin - Distributes jobs equally amongst the available real server

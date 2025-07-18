@@ -15,30 +15,30 @@ set -o nounset
 
 # get_status() - Print the current status of the cluster
 function get_status {
-    printf "CPU usage: "
-    grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage " %"}'
-    printf "Memory free(Kb):"
-    awk -v low="$(grep low /proc/zoneinfo | awk '{k+=$2}END{print k}')" '{a[$1]=$2}  END{ print a["MemFree:"]+a["Active(file):"]+a["Inactive(file):"]+a["SReclaimable:"]-(12*low);}' /proc/meminfo
-    echo "Kubernetes Events:"
-    kubectl get events -A --sort-by=".metadata.managedFields[0].time"
-    echo "Kubernetes Resources:"
-    kubectl get all -A -o wide
-    echo "Kubernetes Pods:"
-    kubectl describe pods
-    echo "Kubernetes Nodes:"
-    kubectl describe nodes
+	printf "CPU usage: "
+	grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage " %"}'
+	printf "Memory free(Kb):"
+	awk -v low="$(grep low /proc/zoneinfo | awk '{k+=$2}END{print k}')" '{a[$1]=$2}  END{ print a["MemFree:"]+a["Active(file):"]+a["Inactive(file):"]+a["SReclaimable:"]-(12*low);}' /proc/meminfo
+	echo "Kubernetes Events:"
+	kubectl get events -A --sort-by=".metadata.managedFields[0].time"
+	echo "Kubernetes Resources:"
+	kubectl get all -A -o wide
+	echo "Kubernetes Pods:"
+	kubectl describe pods
+	echo "Kubernetes Nodes:"
+	kubectl describe nodes
 }
 
 sudo modprobe br_netfilter
 
 if [ -z "$(sudo docker images kindest/node:flannel -q)" ]; then
-    sudo docker build --tag kindest/node:flannel --no-cache .
+	sudo docker build --tag kindest/node:flannel --no-cache .
 fi
 
 trap get_status ERR
 if ! sudo "$(command -v kind)" get clusters | grep -e k8s; then
-    # editorconfig-checker-disable
-    cat <<EOF | sudo kind create cluster --name k8s --config=-
+	# editorconfig-checker-disable
+	cat <<EOF | sudo kind create cluster --name k8s --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
@@ -61,12 +61,12 @@ nodes:
       - hostPath: /opt/containernetworking/plugins
         containerPath: /opt/cni/bin
 EOF
-    # editorconfig-checker-enable
-    mkdir -p "$HOME/.kube"
-    sudo cp /root/.kube/config "$HOME/.kube/config"
-    sudo chown -R "$USER" "$HOME/.kube/"
-    chmod 600 "$HOME/.kube/config"
-    newgrp docker <<"EONG"
+	# editorconfig-checker-enable
+	mkdir -p "$HOME/.kube"
+	sudo cp /root/.kube/config "$HOME/.kube/config"
+	sudo chown -R "$USER" "$HOME/.kube/"
+	chmod 600 "$HOME/.kube/config"
+	newgrp docker <<"EONG"
     flannel_imgs=$(grep " image:" kube-flannel.yaml | awk '{print $2}' | sort | uniq)
     demo_imgs=$(grep "^.*_img=" demo.sh | awk -F '=' '{ print $2}')
     for img in $flannel_imgs $demo_imgs; do
@@ -80,7 +80,7 @@ kubectl apply -f ./kube-flannel.yaml
 
 # Wait for node readiness
 for node in $(kubectl get node -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); do
-    kubectl wait --for=condition=ready "node/$node" --timeout=3m
+	kubectl wait --for=condition=ready "node/$node" --timeout=3m
 done
 # Wait for flannel service
 kubectl rollout status daemonset.apps/kube-flannel-ds -n kube-flannel --timeout=3m

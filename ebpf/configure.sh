@@ -14,5 +14,5 @@ set -o errexit
 set -o nounset
 
 if [ -z "$(sudo docker images ebpf:network -q)" ]; then
-    sudo docker build --tag ebpf:network .
+	sudo docker build --tag ebpf:network .
 fi

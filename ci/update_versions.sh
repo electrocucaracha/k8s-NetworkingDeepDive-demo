@@ -11,47 +11,47 @@
 set -o errexit
 set -o pipefail
 if [[ ${DEBUG:-false} == "true" ]]; then
-    set -o xtrace
+	set -o xtrace
 fi
 
 function get_version {
-    local type="$1"
-    local name="$2"
-    local version=""
-    local attempt_counter=0
-    readonly max_attempts=5
+	local type="$1"
+	local name="$2"
+	local version=""
+	local attempt_counter=0
+	readonly max_attempts=5
 
-    until [ "$version" ]; do
-        version=$("_get_latest_$type" "$name")
-        if [ "$version" ]; then
-            break
-        elif [ ${attempt_counter} -eq ${max_attempts} ]; then
-            echo "Max attempts reached"
-            exit 1
-        fi
-        attempt_counter=$((attempt_counter + 1))
-        sleep $((attempt_counter * 2))
-    done
+	until [ "$version" ]; do
+		version=$("_get_latest_$type" "$name")
+		if [ "$version" ]; then
+			break
+		elif [ ${attempt_counter} -eq ${max_attempts} ]; then
+			echo "Max attempts reached"
+			exit 1
+		fi
+		attempt_counter=$((attempt_counter + 1))
+		sleep $((attempt_counter * 2))
+	done
 
-    echo "${version#v}"
+	echo "${version#v}"
 }
 
 function _get_latest_github_release {
-    url_effective=$(curl -sL -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest")
-    if [ "$url_effective" ]; then
-        echo "${url_effective##*/}"
-    fi
+	url_effective=$(curl -sL -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest")
+	if [ "$url_effective" ]; then
+		echo "${url_effective##*/}"
+	fi
 }
 
 function _get_latest_docker_tag {
-    curl -sfL "https://registry.hub.docker.com/v2/repositories/$1/tags?page_size=1024" | python -c 'import json,sys,re;versions=[obj["name"] for obj in json.load(sys.stdin)["results"] if re.match("^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$",obj["name"])];print("\n".join(versions))' | uniq | sort -rn | head -n 1
+	curl -sfL "https://registry.hub.docker.com/v2/repositories/$1/tags?page_size=1024" | python -c 'import json,sys,re;versions=[obj["name"] for obj in json.load(sys.stdin)["results"] if re.match("^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$",obj["name"])];print("\n".join(versions))' | uniq | sort -rn | head -n 1
 }
 
 function _get_latest_go {
-    stable_version="$(curl -sL https://golang.org/VERSION?m=text)"
-    if [ "$stable_version" ]; then
-        echo "${stable_version#go}"
-    fi
+	stable_version="$(curl -sL https://golang.org/VERSION?m=text)"
+	if [ "$stable_version" ]; then
+		echo "${stable_version#go}"
+	fi
 }
 
 trap "make fmt" EXIT
@@ -85,9 +85,9 @@ wget -q -O ./flannel/kube-flannel.yaml https://raw.githubusercontent.com/flannel
 # Update GitHub Action commit hashes
 gh_actions=$(grep -r "uses: [a-zA-Z\-]*/[\_a-z\-]*@" .github/ | sed 's/@.*//' | awk -F ': ' '{ print $3 }' | sort -u)
 for action in $gh_actions; do
-    commit_hash=$(git ls-remote "https://github.com/$action" | grep 'refs/tags/[v]\?[0-9][0-9\.]*$' | sed 's|refs/tags/[vV]\?[\.]\?||g' | sort -u -k2 -V | tail -1 | awk '{ printf "%s # %s\n",$1,$2 }')
-    # shellcheck disable=SC2267
-    grep -ElRZ "uses: $action@" .github/ | xargs -0 -l sed -i -e "s|uses: $action@.*|uses: $action@$commit_hash|g"
+	commit_hash=$(git ls-remote "https://github.com/$action" | grep 'refs/tags/[v]\?[0-9][0-9\.]*$' | sed 's|refs/tags/[vV]\?[\.]\?||g' | sort -u -k2 -V | tail -1 | awk '{ printf "%s # %s\n",$1,$2 }')
+	# shellcheck disable=SC2267
+	grep -ElRZ "uses: $action@" .github/ | xargs -0 -l sed -i -e "s|uses: $action@.*|uses: $action@$commit_hash|g"
 done
 
 # Update cdebug
