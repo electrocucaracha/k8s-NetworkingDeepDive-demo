@@ -1,14 +1,14 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # hadolint ignore=DL3008
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-  bpfcc-tools=0.12.0-2 \ 
+  bpfcc-tools=0.18.0+ds-2 \
   "linux-headers-$(uname -r)" \
-  iproute2=5.5.0-1ubuntu1 \
-  python3=3.8.2-0ubuntu2 \
-  python3-bpfcc=0.12.0-2 \
-  python3-pyroute2=0.5.9-0ubuntu2 && \
+  iproute2=5.15.0-1ubuntu2 \
+  python3=3.10.6-1~22.04.1 \
+  python3-bpfcc=0.18.0+ds-2 \
+  python3-pyroute2=0.6.4-3ubuntu2 && \
   rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/ebpf/
