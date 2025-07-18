@@ -5,7 +5,6 @@ containers in the Kubernetes pod. The pause container has two main
 responsibilities:
 
 1. Serves as the basis of Linux namespace sharing in the pod.
-
    - Allows containers to communicate directly using the localhost.
    - Allows the containers to share their inter-process communication (IPC)
      namespace with the other containers so they can communicate directly through
