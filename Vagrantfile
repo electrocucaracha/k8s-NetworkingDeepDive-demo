@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :libvirt
   config.vm.provider :virtualbox
 
-  config.vm.box = "generic/ubuntu2004"
+  config.vm.box = "generic/ubuntu2204"
   config.vm.box_check_update = false
 
   %i[virtualbox libvirt].each do |provider|
@@ -74,8 +74,7 @@ Vagrant.configure("2") do |config|
        { host: instance.to_s, guest: "/vagrant" }].each do |mapping|
         demo.vm.synced_folder (mapping[:host]).to_s, (mapping[:guest]).to_s
         demo.vm.provider :libvirt do |v, override|
-          override.vm.synced_folder (mapping[:host]).to_s, (mapping[:guest]).to_s, type: "virtiofs"
-          v.memorybacking :access, mode: "shared"
+          override.vm.synced_folder (mapping[:host]).to_s, (mapping[:guest]).to_s, type: 'nfs', nfs_version: ENV.fetch('VAGRANT_NFS_VERSION', 3)
         end
       end
       demo.vm.provision "shell", privileged: false, inline: <<~SHELL
