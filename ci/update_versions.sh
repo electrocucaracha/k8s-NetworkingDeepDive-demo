@@ -69,7 +69,7 @@ busybox_version="$(get_version docker_tag library/busybox)"
 find . -type f -name '*.sh' -not -path ./ci/\* -exec sed -i "s/busybox:[0-9]*\\.[0-9]*\\.[0-9]*/busybox:$busybox_version/g" {} \;
 
 # Update umoci
-sed -i "s|umoci/releases/download/v.*|umoci/releases/download/v$(get_version github_release opencontainers/umoci)/umoci.amd64|g" pause/install.sh
+sed -i "s|umoci/releases/download/v.*|umoci/releases/download/v$(get_version github_release opencontainers/umoci)/umoci.linux.amd64|g" pause/install.sh
 
 # Update runC
 sed -i "s/runc --version | awk 'NR==1{print \$3}')\" != \".*/runc --version | awk 'NR==1{print \$3}')\" != \"${PKG_RUNC_VERSION}\" ]; then/g" pause/install.sh
