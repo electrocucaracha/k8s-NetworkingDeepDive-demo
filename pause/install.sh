@@ -46,7 +46,7 @@ fi
 
 # umoci - Modifies Open Container Images
 if ! command -v umoci; then
-    sudo curl -o /usr/bin/umoci -sL https://github.com/opencontainers/umoci/releases/download/v0.6.0/umoci.amd64
+    sudo curl -o /usr/bin/umoci -sL https://github.com/opencontainers/umoci/releases/download/v0.6.0/umoci.linux.amd64
     sudo chmod +x /usr/bin/umoci
 fi
 
