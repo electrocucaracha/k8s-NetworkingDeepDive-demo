@@ -57,8 +57,8 @@ if ! command -v cnitool; then
 fi
 
 # runc - CLI tool for spawning and running containers according to the OCI specification.
-if ! command -v runc || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.3.0" ]; then
-    sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.3.0/runc.amd64
+if ! command -v runc || [ "$(runc --version | awk 'NR==1{print $3}')" != "1.3.3" ]; then
+    sudo curl -o /usr/bin/runc -L https://github.com/opencontainers/runc/releases/download/v1.3.3/runc.amd64
     sudo chmod +x /usr/bin/runc
 fi
 

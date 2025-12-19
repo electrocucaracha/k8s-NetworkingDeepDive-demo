@@ -17,13 +17,13 @@ jobs:
   check-broken-links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # 6.0.1
       - name: Check broken links
         uses: tcort/github-action-markdown-link-check@f3d33029dca1c4a24b87e2df648f9f4604ef6533 # 1.1.1
   check-super-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # 6.0.1
       - name: Check super-linter
         uses: github/super-linter@b807e99ddd37e444d189cfd2c2ca1274d8ae8ef1 # 7
         env:
@@ -36,7 +36,7 @@ jobs:
   check-tox:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # 6.0.1
       - name: Install tox
         run: pip install tox --break-system-packages
       - name: Run tox validation
