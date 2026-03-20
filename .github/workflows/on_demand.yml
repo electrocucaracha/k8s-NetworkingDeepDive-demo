@@ -11,6 +11,8 @@ name: Check Demos
 # yamllint disable-line rule:truthy
 on:
   push:
+    branches-ignore:
+      - "create-pr-action/**"
     paths:
       - "pause/*"
       - "ipvs/*"
