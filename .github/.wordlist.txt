@@ -81,6 +81,7 @@ gact
 gnwvw
 gso
 gw
+hashicorp
 hhbrn
 href
 https
