@@ -265,5 +265,5 @@ coding, documenting, testing, spreading the word at events within others.
 
 ![Visualization of the codebase](./codebase-structure.svg)
 
-[1]: https://www.vagrantup.com/
+[1]: https://developer.hashicorp.com/vagrant
 [2]: https://github.com/electrocucaracha/bootstrap-vagrant
