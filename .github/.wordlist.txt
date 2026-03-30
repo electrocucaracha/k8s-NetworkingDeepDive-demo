@@ -67,7 +67,6 @@ etcd
 eth
 ethertype
 eui
-extensibility
 fc
 fca
 feda
@@ -189,7 +188,6 @@ RemoteAddress
 ret
 rubocop
 RunPodSandbox
-runtime
 sdbd
 sdtout
 segs
@@ -216,7 +214,6 @@ udpcsum
 UID
 unicast
 uplink
-vagrantup
 VETH
 vethc
 vethCEE
