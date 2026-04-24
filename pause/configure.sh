@@ -18,7 +18,13 @@ source defaults.env
 
 # Allow rootless user namespace creation (required for rootless runc on Ubuntu 24.04+)
 if [ -f /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
-    sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+    current_apparmor_userns_setting="$(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns)"
+    if [ "$current_apparmor_userns_setting" != "0" ]; then
+        echo "NOTICE: Setting kernel.apparmor_restrict_unprivileged_userns=0 to allow rootless user namespace creation."
+        echo "NOTICE: This relaxes a host-wide kernel security setting for the rest of the current machine session."
+        echo "NOTICE: To revert this change later, run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=$current_apparmor_userns_setting"
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+    fi
 fi
 
 # Creates the NETCONFPATH folder
