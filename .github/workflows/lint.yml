@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
       - name: Check super-linter
-        uses: github/super-linter@b807e99ddd37e444d189cfd2c2ca1274d8ae8ef1 # 7
+        uses: super-linter/super-linter@9e863354e3ff62e0727d37183162c4a88873df41 # 8.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
