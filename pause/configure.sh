@@ -17,7 +17,9 @@ set -o nounset
 source defaults.env
 
 # Allow rootless user namespace creation (required for rootless runc on Ubuntu 24.04+)
-sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+if [ -f /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+    sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+fi
 
 # Creates the NETCONFPATH folder
 sudo mkdir -p "$NETCONFPATH"
