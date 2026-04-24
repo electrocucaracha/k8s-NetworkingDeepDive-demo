@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
-      - uses: reviewdog/action-misspell@e7ea17f144822818706c7e579de7927d59384575 # 1.27.0
+      - uses: reviewdog/action-misspell@d6429416b12b09b4e2768307d53bef58d172e962 # 1.27.0
         with:
           github_token: ${{ secrets.github_token }}
   check-spellcheck:
