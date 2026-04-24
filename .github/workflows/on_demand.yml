@@ -46,7 +46,7 @@ jobs:
       demos: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # 3.0.2
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # 4.0.1
         if: ${{ !env.ACT }}
         id: filter
         with:
@@ -72,7 +72,7 @@ jobs:
         demo: ${{ fromJSON(needs.changes.outputs.demos) }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # 6.0.2
-      - uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # 6.2.0
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # 6.4.0
         with:
           go-version: "1.24"
           check-latest: true
